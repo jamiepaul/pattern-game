@@ -1,3 +1,4 @@
+import Game from '../Game';
 import styles from './App.module.css';
 
 function App() {
@@ -6,7 +7,9 @@ function App() {
       <header className={`${styles.container} ${styles.header}`}>
         <h1>Patterns Game</h1>
       </header>
-      <main className={styles.container}>Make grid here</main>
+      <main className={styles.container}>
+        <Game />
+      </main>
       <footer className={`${styles.container} ${styles.footer}`}>
         <p>
           Icons by{' '}
