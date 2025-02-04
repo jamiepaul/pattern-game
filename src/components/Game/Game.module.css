@@ -6,10 +6,3 @@
   grid-row-gap: 0px;
   border: 2px solid currentColor;
 }
-
-.cell {
-  width: 9em;
-  aspect-ratio: 1;
-  margin: 1px;
-  border: 1px solid currentColor;
-}

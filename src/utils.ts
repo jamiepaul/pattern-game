@@ -1,3 +1,16 @@
+import { v4 as uuidv4 } from 'uuid';
+
+export const createCells = (length: number) => {
+  // eslint-disable-next-line prefer-const
+  let output = [];
+
+  for (let i = 0; i < length; i += 1) {
+    output.push({ id: uuidv4() });
+  }
+
+  return output;
+};
+
 export const range = (
   start: number,
   end: number | undefined = undefined,
