@@ -1,63 +1,64 @@
 import { useEffect, useState } from 'react';
-import { createCells, getMatches } from '@/utils';
+import { produce } from 'immer';
+import { TypeCell, createCells, getMatches } from '@/utils';
 import Cell from '@components/Cell';
 
 import styles from './Game.module.css';
 
-export type ComparableCellsState = {
-  previous: null | {
-    id: string;
-    pieces: string[];
-  };
-  active: null | {
-    id: string;
-    pieces: string[];
-  };
-};
-
-const cells = createCells(6);
+const initialCells = createCells(6);
 
 function Game() {
-  const [comparableCells, setComparableCells] = useState<ComparableCellsState>({
-    active: null,
-    previous: null,
-  });
+  const [cells, setCells] = useState<TypeCell[]>(initialCells);
 
   useEffect(() => {
-    if (comparableCells.previous === null) {
-      console.log('two cells must be selected before comparison');
-      return;
-    }
+    const prevCell = cells.find((cell: TypeCell) => cell.isPrevious);
+    const activeCell = cells.find((cell: TypeCell) => cell.isActive);
+    const matches = getMatches(prevCell, activeCell);
 
-    const matches = getMatches(comparableCells);
     if (matches.length === 0) {
       console.log('NO MATCHES');
     } else {
       console.log(matches);
     }
-  }, [comparableCells]);
+  }, [cells]);
 
-  function updateCells(id: string, pieces: string[]) {
-    setComparableCells({
-      previous: comparableCells.active ? { ...comparableCells.active } : null,
-      active: {
-        id: id,
-        pieces: pieces,
-      },
-    });
+  function updateActiveCell(id: string) {
+    setCells(
+      produce(cells, (draft) => {
+        const nextCell = draft.find((item) => item.id === id);
+        const activeCell = draft.find((item) => item.isActive);
+        const prevActiveCell = draft.find((item) => item.isPrevious);
+
+        // negate previously active cell
+        if (prevActiveCell) {
+          prevActiveCell.isPrevious = false;
+        }
+        // set active cell to previous
+        if (activeCell) {
+          activeCell.isActive = false;
+          activeCell.isPrevious = true;
+        }
+        // set new active cell
+        if (nextCell !== undefined) {
+          nextCell.isActive = true;
+        }
+      }),
+    );
   }
+
+  console.log(cells);
 
   return (
     <section className={styles.grid}>
-      {cells.map(({ id, pieces }) => {
+      {cells.map(({ id, pieces, isActive, isPrevious }) => {
         return (
           <Cell
             key={id}
             id={id}
-            isPrevActive={comparableCells.previous?.id === id}
-            isActive={comparableCells.active?.id === id}
-            setActive={updateCells}
             pieces={pieces}
+            isPrevActive={isPrevious}
+            isActive={isActive}
+            setActive={updateActiveCell}
           />
         );
       })}

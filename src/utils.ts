@@ -1,5 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
-import { ComparableCellsState } from './components/Game';
+
+export type TypeCell = {
+  id: string;
+  pieces: string[];
+  isActive: boolean;
+  isPrevious: boolean;
+};
 
 const gamePieces = [
   ['A1', 'B1'], // Cell 1
@@ -16,7 +22,7 @@ const gamePieces = [
   ['A2', 'B2'], // Cell 12
 ];
 
-export const createCells = (length: number) => {
+export const createCells = (length: number): TypeCell[] => {
   // eslint-disable-next-line prefer-const
   let output = [];
 
@@ -24,6 +30,8 @@ export const createCells = (length: number) => {
     output.push({
       id: uuidv4(),
       pieces: gamePieces[i],
+      isActive: false,
+      isPrevious: false,
     });
   }
 
@@ -50,11 +58,19 @@ export const range = (
   return output;
 };
 
-export const getMatches = (cells: ComparableCellsState): string[] => {
+export const getMatches = (
+  prevActive: TypeCell | undefined,
+  active: TypeCell | undefined,
+): string[] => {
   const matching: string[] = [];
 
-  cells.previous?.pieces.forEach((item) => {
-    if (cells.active?.pieces.includes(item)) {
+  if (!prevActive || !active) {
+    console.log('two cells must be selected before comparison');
+    return matching;
+  }
+
+  prevActive?.pieces.forEach((item) => {
+    if (active?.pieces.includes(item)) {
       matching.push(item);
     }
   });
