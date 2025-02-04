@@ -1,28 +1,49 @@
-import { useState } from 'react';
-import { createCells } from '@/utils';
+import { useEffect, useState } from 'react';
+import { createCells, getMatches } from '@/utils';
 import Cell from '@components/Cell';
 
 import styles from './Game.module.css';
 
-type ComparableCellsState = {
-  prevId: string | null;
-  activeId: string | null;
+export type ComparableCellsState = {
+  previous: null | {
+    id: string;
+    pieces: string[];
+  };
+  active: null | {
+    id: string;
+    pieces: string[];
+  };
 };
 
 const cells = createCells(6);
 
 function Game() {
   const [comparableCells, setComparableCells] = useState<ComparableCellsState>({
-    activeId: null,
-    prevId: null,
+    active: null,
+    previous: null,
   });
 
-  console.log(cells);
+  useEffect(() => {
+    if (comparableCells.previous === null) {
+      console.log('two cells must be selected before comparison');
+      return;
+    }
 
-  function updateCells(id: string) {
+    const matches = getMatches(comparableCells);
+    if (matches.length === 0) {
+      console.log('NO MATCHES');
+    } else {
+      console.log(matches);
+    }
+  }, [comparableCells]);
+
+  function updateCells(id: string, pieces: string[]) {
     setComparableCells({
-      prevId: comparableCells.activeId,
-      activeId: id,
+      previous: comparableCells.active ? { ...comparableCells.active } : null,
+      active: {
+        id: id,
+        pieces: pieces,
+      },
     });
   }
 
@@ -33,8 +54,8 @@ function Game() {
           <Cell
             key={id}
             id={id}
-            isPrevActive={comparableCells.prevId === id}
-            isActive={comparableCells.activeId === id}
+            isPrevActive={comparableCells.previous?.id === id}
+            isActive={comparableCells.active?.id === id}
             setActive={updateCells}
             pieces={pieces}
           />

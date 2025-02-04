@@ -4,7 +4,7 @@ type CellProps = {
   id: string;
   isPrevActive: boolean;
   isActive: boolean;
-  setActive: (id: string) => void;
+  setActive: (id: string, pieces: string[]) => void;
   pieces: string[];
 };
 
@@ -19,12 +19,10 @@ function Cell({ id, isActive, setActive, isPrevActive, pieces }: CellProps) {
   }
 
   return (
-    <div key={id} id={id} data-status={statusAttr} className={styles.cell}>
+    <div id={id} data-status={statusAttr} className={styles.cell}>
       <button
         className={styles.btn}
-        onClick={() => {
-          setActive(id);
-        }}
+        onClick={() => setActive(id, pieces)}
       ></button>
       <div className={styles.pieces}>
         <p>pieces</p>
