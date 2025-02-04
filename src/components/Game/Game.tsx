@@ -9,13 +9,15 @@ type ComparableCellsState = {
   activeId: string | null;
 };
 
-const cells = createCells(12);
+const cells = createCells(6);
 
 function Game() {
   const [comparableCells, setComparableCells] = useState<ComparableCellsState>({
     activeId: null,
     prevId: null,
   });
+
+  console.log(cells);
 
   function updateCells(id: string) {
     setComparableCells({
@@ -26,7 +28,7 @@ function Game() {
 
   return (
     <section className={styles.grid}>
-      {cells.map(({ id }) => {
+      {cells.map(({ id, pieces }) => {
         return (
           <Cell
             key={id}
@@ -34,6 +36,7 @@ function Game() {
             isPrevActive={comparableCells.prevId === id}
             isActive={comparableCells.activeId === id}
             setActive={updateCells}
+            pieces={pieces}
           />
         );
       })}

@@ -28,3 +28,19 @@
   inset: 0;
   z-index: 1;
 }
+
+.pieces [data-piece=A1] {
+  background-color: aqua;
+}
+
+.pieces [data-piece=A2] {
+  background-color: coral;
+}
+
+.pieces [data-piece=B1] {
+  background-color: blueviolet;
+}
+
+.pieces [data-piece=B2] {
+  background-color: darkmagenta;
+}

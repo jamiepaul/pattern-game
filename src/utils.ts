@@ -1,11 +1,29 @@
 import { v4 as uuidv4 } from 'uuid';
 
+const gamePieces = [
+  ['A1', 'B1'], // Cell 1
+  ['A1', 'B2'], // Cell 2
+  ['A2', 'B2'], // Cell 3
+  ['A2', 'B2'], // Cell 4
+  ['A1', 'B1'], // Cell 5
+  ['A2', 'B1'], // Cell 6
+  ['A1', 'B1'], // Cell 7
+  ['A2', 'B2'], // Cell 8
+  ['A1', 'B1'], // Cell 9
+  ['A2', 'B2'], // Cell 10
+  ['A1', 'B1'], // Cell 11
+  ['A2', 'B2'], // Cell 12
+];
+
 export const createCells = (length: number) => {
   // eslint-disable-next-line prefer-const
   let output = [];
 
   for (let i = 0; i < length; i += 1) {
-    output.push({ id: uuidv4() });
+    output.push({
+      id: uuidv4(),
+      pieces: gamePieces[i],
+    });
   }
 
   return output;

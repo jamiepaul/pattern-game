@@ -5,11 +5,12 @@ type CellProps = {
   isPrevActive: boolean;
   isActive: boolean;
   setActive: (id: string) => void;
+  pieces: string[];
 };
 
 type CellStatus = 'default' | 'previous' | 'active';
 
-function Cell({ id, isActive, setActive, isPrevActive }: CellProps) {
+function Cell({ id, isActive, setActive, isPrevActive, pieces }: CellProps) {
   let statusAttr: CellStatus = 'default';
   if (isActive) {
     statusAttr = 'active';
@@ -25,7 +26,14 @@ function Cell({ id, isActive, setActive, isPrevActive }: CellProps) {
           setActive(id);
         }}
       ></button>
-      <div>game pieces</div>
+      <div className={styles.pieces}>
+        <p>pieces</p>
+        {pieces.map((item) => (
+          <div key={item} id={item} data-piece={item}>
+            {item}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
