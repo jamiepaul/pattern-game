@@ -1,3 +1,4 @@
+import VisuallyHidden from '../VisuallyHidden';
 import styles from './Cell.module.css';
 
 type CellProps = {
@@ -20,12 +21,12 @@ function Cell({ id, isActive, setActive, isPrevActive, pieces }: CellProps) {
 
   return (
     <div id={id} data-status={statusAttr} className={styles.cell}>
-      <button
-        className={styles.btn}
-        onClick={() => setActive(id, pieces)}
-      ></button>
+      <button className={styles.btn} onClick={() => setActive(id, pieces)}>
+        <VisuallyHidden>
+          {`Select cell with pieces ${pieces.join(', ')}`}
+        </VisuallyHidden>
+      </button>
       <div className={styles.pieces}>
-        <p>pieces</p>
         {pieces.map((item) => (
           <div key={item} id={item} data-piece={item}>
             {item}
