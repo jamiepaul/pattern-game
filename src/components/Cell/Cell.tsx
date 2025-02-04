@@ -2,27 +2,27 @@ import styles from './Cell.module.css';
 
 type CellProps = {
   id: string;
+  isPrevActive: boolean;
   isActive: boolean;
-  setActiveCell: React.Dispatch<React.SetStateAction<string | null>>;
+  setActive: (id: string) => void;
 };
 
-// TODO: Track active vs empty status if no game pieces left
-// type CellStatus = 'default' | 'active' | 'empty';
+type CellStatus = 'default' | 'previous' | 'active';
 
-function Cell({ id, isActive, setActiveCell }: CellProps) {
-  // const [status, setStatus] = useState<CellStatus>('default');
+function Cell({ id, isActive, setActive, isPrevActive }: CellProps) {
+  let statusAttr: CellStatus = 'default';
+  if (isActive) {
+    statusAttr = 'active';
+  } else if (isPrevActive) {
+    statusAttr = 'previous';
+  }
 
   return (
-    <div
-      key={id}
-      id={id}
-      data-status={isActive ? 'active' : 'default'}
-      className={styles.cell}
-    >
+    <div key={id} id={id} data-status={statusAttr} className={styles.cell}>
       <button
         className={styles.btn}
         onClick={() => {
-          setActiveCell(id);
+          setActive(id);
         }}
       ></button>
       <div>game pieces</div>

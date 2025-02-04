@@ -7,13 +7,19 @@
   margin: 1px;
 }
 
+.cell[data-status=previous] .btn {
+  border: var(--border-width) solid #cbedff;
+}
+
 .cell[data-status=active] .btn {
   border: var(--border-width) solid var(--border-color);
 }
 
-.cell[data-status=empty] .btn {
+/* TODO: style active but empty game pieces
+.cell[data-status=active] .btn {
   border: var(--border-width) dashed var(--border-color);
 }
+*/
 
 .btn {
   background: transparent;

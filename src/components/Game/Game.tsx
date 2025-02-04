@@ -4,10 +4,25 @@ import Cell from '@components/Cell';
 
 import styles from './Game.module.css';
 
+type ComparableCellsState = {
+  prevId: string | null;
+  activeId: string | null;
+};
+
 const cells = createCells(12);
 
 function Game() {
-  const [activeCell, setActiveCell] = useState<string | null>(null);
+  const [comparableCells, setComparableCells] = useState<ComparableCellsState>({
+    activeId: null,
+    prevId: null,
+  });
+
+  function updateCells(id: string) {
+    setComparableCells({
+      prevId: comparableCells.activeId,
+      activeId: id,
+    });
+  }
 
   return (
     <section className={styles.grid}>
@@ -16,8 +31,9 @@ function Game() {
           <Cell
             key={id}
             id={id}
-            isActive={activeCell === id}
-            setActiveCell={setActiveCell}
+            isPrevActive={comparableCells.prevId === id}
+            isActive={comparableCells.activeId === id}
+            setActive={updateCells}
           />
         );
       })}
