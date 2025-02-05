@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { produce } from 'immer';
 import { createCells, getMatches } from '@/utils';
 
@@ -9,42 +9,15 @@ import styles from './Game.module.css';
 const initialCells = createCells(6);
 
 function Game() {
-  const [cells, setCells] = useState<TypeCell[]>(initialCells);
-
   console.log('RENDER: Game Component');
-
-  useEffect(() => {
-    console.log('USE EFFECT: cells change');
-    const prevCell = cells.find((cell: TypeCell) => cell.isPrevious);
-    const activeCell = cells.find((cell: TypeCell) => cell.isActive);
-    const matches = getMatches(prevCell, activeCell);
-
-    if (matches.length === 0) {
-      console.log('NO MATCHES');
-    } else {
-      console.log(matches);
-      setCells(
-        produce(cells, (draft) => {
-          // we already checked both exist in getMatches
-          const activeCell = draft.find((item) => item.isActive)!;
-          const prevActiveCell = draft.find((item) => item.isPrevious)!;
-
-          // remove the matching pieces from both cells
-          matches.forEach((pieceId) => {
-            activeCell.pieces = activeCell?.pieces.filter(
-              (item) => item !== pieceId,
-            );
-            prevActiveCell.pieces = prevActiveCell?.pieces.filter(
-              (item) => item !== pieceId,
-            );
-          });
-        }),
-      );
-    }
-  }, [cells]);
+  const [cells, setCells] = useState<TypeCell[]>(initialCells);
 
   function updateActiveCell(id: string) {
     console.log('CELL CLICKED: updateActiveCell');
+    const prevCell = cells.find((cell: TypeCell) => cell.isActive);
+    const activeCell = cells.find((cell: TypeCell) => cell.id === id);
+    const matches = getMatches(prevCell, activeCell);
+
     setCells(
       produce(cells, (draft) => {
         const nextCell = draft.find((item) => item.id === id);
@@ -63,6 +36,18 @@ function Game() {
         // set new active cell
         if (nextCell !== undefined) {
           nextCell.isActive = true;
+        }
+
+        // remove matching pieces
+        if (matches.length && activeCell && nextCell) {
+          matches.forEach((pieceId) => {
+            activeCell.pieces = activeCell?.pieces.filter(
+              (item) => item !== pieceId,
+            );
+            nextCell.pieces = nextCell?.pieces.filter(
+              (item) => item !== pieceId,
+            );
+          });
         }
       }),
     );
