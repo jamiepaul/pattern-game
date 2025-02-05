@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { produce } from 'immer';
-import { TypeCell, createCells, getMatches } from '@/utils';
-import Cell from '@components/Cell';
+import { createCells, getMatches } from '@/utils';
 
+import { TypeCell } from '@/globals';
+import Cell from '@components/Cell';
 import styles from './Game.module.css';
 
 const initialCells = createCells(6);
@@ -10,7 +11,10 @@ const initialCells = createCells(6);
 function Game() {
   const [cells, setCells] = useState<TypeCell[]>(initialCells);
 
+  console.log('RENDER: Game Component');
+
   useEffect(() => {
+    console.log('USE EFFECT: cells change');
     const prevCell = cells.find((cell: TypeCell) => cell.isPrevious);
     const activeCell = cells.find((cell: TypeCell) => cell.isActive);
     const matches = getMatches(prevCell, activeCell);
@@ -40,6 +44,7 @@ function Game() {
   }, [cells]);
 
   function updateActiveCell(id: string) {
+    console.log('CELL CLICKED: updateActiveCell');
     setCells(
       produce(cells, (draft) => {
         const nextCell = draft.find((item) => item.id === id);
@@ -62,8 +67,6 @@ function Game() {
       }),
     );
   }
-
-  console.log(cells);
 
   return (
     <section className={styles.grid}>

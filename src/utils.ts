@@ -1,11 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-
-export type TypeCell = {
-  id: string;
-  pieces: string[];
-  isActive: boolean;
-  isPrevious: boolean;
-};
+import { TypeCell } from './globals';
 
 const gamePieces = [
   ['A1', 'B1'], // Cell 1
