@@ -19,6 +19,23 @@ function Game() {
       console.log('NO MATCHES');
     } else {
       console.log(matches);
+      setCells(
+        produce(cells, (draft) => {
+          // we already checked both exist in getMatches
+          const activeCell = draft.find((item) => item.isActive)!;
+          const prevActiveCell = draft.find((item) => item.isPrevious)!;
+
+          // remove the matching pieces from both cells
+          matches.forEach((pieceId) => {
+            activeCell.pieces = activeCell?.pieces.filter(
+              (item) => item !== pieceId,
+            );
+            prevActiveCell.pieces = prevActiveCell?.pieces.filter(
+              (item) => item !== pieceId,
+            );
+          });
+        }),
+      );
     }
   }, [cells]);
 
