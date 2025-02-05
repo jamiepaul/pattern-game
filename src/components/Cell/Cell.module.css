@@ -7,19 +7,19 @@
   margin: 1px;
 }
 
-.cell[data-status=previous] .btn {
-  border: var(--border-width) solid #cbedff;
-}
-
 .cell[data-status=active] .btn {
   border: var(--border-width) solid var(--border-color);
 }
 
-/* TODO: style active but empty game pieces
-.cell[data-status=active] .btn {
-  border: var(--border-width) dashed var(--border-color);
+/* TODO: animate dashed border */
+.cell[data-status=active][data-pieces="0"] .btn {
+  border-style: dashed;
 }
-*/
+
+/* TODO: remove later, prev shouldnt have a visual state */
+.cell[data-status=previous] .btn {
+  border: var(--border-width) solid #cbedff;
+}
 
 .btn {
   background: transparent;

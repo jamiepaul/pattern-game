@@ -20,7 +20,12 @@ function Cell({ id, isActive, setActive, isPrevActive, pieces }: CellProps) {
   }
 
   return (
-    <div id={id} data-status={statusAttr} className={styles.cell}>
+    <div
+      id={id}
+      className={styles.cell}
+      data-status={statusAttr}
+      data-pieces={pieces.length}
+    >
       <button className={styles.btn} onClick={() => setActive(id, pieces)}>
         <VisuallyHidden>
           {`Select cell with pieces ${pieces.join(', ')}`}
