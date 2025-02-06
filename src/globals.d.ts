@@ -1,6 +1,6 @@
 export type TypeCell = {
   id: string;
-  status: string;
+  status: 'default' | 'previous' | 'active' | 'empty';
   pieces: string[];
 };
 

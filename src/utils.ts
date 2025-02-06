@@ -23,7 +23,7 @@ export const createCells = (length: number): TypeCell[] => {
   for (let i = 0; i < length; i += 1) {
     output.push({
       id: uuidv4(),
-      status: 'default',
+      status: 'default' as const,
       pieces: gamePieces[i],
     });
   }

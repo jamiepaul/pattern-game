@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CellStatus, TypeCell } from '@/globals';
 import { getMatches } from '@/utils';
 import VisuallyHidden from '../VisuallyHidden';
@@ -7,7 +6,7 @@ import styles from './Cell.module.css';
 
 type CellProps = {
   id: string;
-  status: string;
+  status: CellStatus;
   pieces: string[];
   previous: TypeCell | undefined;
   updateCellsState: (id: string, matches?: string[]) => void;
