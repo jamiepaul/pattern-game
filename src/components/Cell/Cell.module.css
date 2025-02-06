@@ -7,26 +7,43 @@
   margin: 1px;
 }
 
-.cell[data-status=active] .btn {
-  border: var(--border-width) solid var(--border-color);
-}
-
-/* TODO: animate dashed border */
-.cell[data-status=active][data-pieces="0"] .btn {
-  border-style: dashed;
-}
-
-/* TODO: remove later, prev shouldnt have a visual state */
-.cell[data-status=previous] .btn {
-  border: var(--border-width) solid #cbedff;
-}
-
 .btn {
   background: transparent;
   border: 0;
   position: absolute;
   inset: 0;
   z-index: 1;
+
+  .cell[data-status=active] & {
+    border: var(--border-width) solid var(--border-color);
+  }
+
+  /* TODO: animate dashed border */
+  .cell[data-status=active][data-pieces="0"] & {
+    border-style: dashed;
+  }
+
+  /* TODO: remove later, prev shouldnt have a visual state */
+  .cell[data-status=previous] & {
+    border: var(--border-width) solid #cbedff;
+  }
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  inset: 0;
+
+  p {
+    border-radius: 2rem;
+    background-color: black;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 0.25rem 0.8rem;
+  }
 }
 
 .pieces [data-piece=A1] {

@@ -53,18 +53,13 @@ export const range = (
 };
 
 export const getMatches = (
-  prevActive: TypeCell | undefined,
-  active: TypeCell | undefined,
+  prevPieces: string[],
+  activePieces: string[],
 ): string[] => {
   const matching: string[] = [];
 
-  if (!prevActive || !active) {
-    console.log('two cells must be selected before comparison');
-    return matching;
-  }
-
-  prevActive?.pieces.forEach((item) => {
-    if (active?.pieces.includes(item)) {
+  prevPieces.forEach((item) => {
+    if (activePieces.includes(item)) {
       matching.push(item);
     }
   });
