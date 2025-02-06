@@ -1,26 +1,18 @@
 import { useEffect } from 'react';
-import VisuallyHidden from '../VisuallyHidden';
-import styles from './Cell.module.css';
 import { TypeCell } from '@/globals';
 import { getMatches } from '@/utils';
+import VisuallyHidden from '../VisuallyHidden';
+import styles from './Cell.module.css';
 
 type CellProps = {
   id: string;
   isActive: boolean;
-  setActive: (id: string, matches?: string[]) => void;
+  updateCellsState: (id: string, matches?: string[]) => void;
   pieces: string[];
   previous: TypeCell | undefined;
-  resetCells: () => void;
 };
 
-function Cell({
-  id,
-  isActive,
-  setActive,
-  pieces,
-  previous,
-  resetCells,
-}: CellProps) {
+function Cell({ id, isActive, updateCellsState, pieces, previous }: CellProps) {
   // console.log('RENDER: Cell Component');
 
   useEffect(() => {
@@ -42,28 +34,23 @@ function Cell({
       return;
     }
 
+    // only one cell has been clicked, comparison can't be run
     if (!previous) {
-      // only one cell has been clicked
-      // we need to update cells state to run comparison on next cell click
-      setActive(id);
+      updateCellsState(id);
       return;
     }
 
-    console.log(
-      `COMPARING: Previous (${previous.pieces.join(', ')}) and Active (${pieces.join(', ')})`,
-    );
     const matches = getMatches(previous.pieces, pieces);
-    console.log(`Matches: ${matches.join(', ')}`);
+    // console.log(
+    //   `COMPARING: Previous (${previous.pieces.join(', ')}) and Active (${pieces.join(', ')})`,
+    // );
+    // console.log(`Matches: ${matches.join(', ')}`);
 
     if (matches.length === 0) {
       // TODO: trigger "no match" message
-      resetCells();
-      return;
     }
 
-    // if no matches, reset isActive & isPrevious properties
-    // if matches, remove matching pieces
-    setActive(id, matches);
+    updateCellsState(id, matches);
   }
 
   return (

@@ -12,66 +12,64 @@ function Game() {
   console.log('RENDER: Game Component');
   const [cells, setCells] = useState<TypeCell[]>(initialCells);
 
-  // ZERO MATCHES
-  function resetCells() {
-    console.log('CELL CLICKED: resetCells');
-    setCells(
-      produce(cells, (draft) => {
-        const activeCell = draft.find((item) => item.isActive);
+  const clearActiveCells = (draft: TypeCell[]) => {
+    const activeCell = draft.find((item) => item.isActive);
+    if (activeCell) {
+      activeCell.isActive = false;
+    }
+    const prevActiveCell = draft.find((item) => item.isPrevious);
+    if (prevActiveCell) {
+      prevActiveCell.isPrevious = false;
+    }
+  };
 
-        // We never set isActive on the cell clicked,
-        // instead, we negate the current isActive property
-        //if (matches && matches.length === 0) {
-        if (activeCell) {
-          activeCell.isActive = false;
-        }
-        //}
+  const removeMatchingPieces = (
+    _draft: TypeCell[],
+    activeCell: TypeCell,
+    nextCell: TypeCell,
+    matches: string[],
+  ) => {
+    matches.forEach((pieceId) => {
+      activeCell.pieces = activeCell.pieces.filter((item) => item !== pieceId);
+      nextCell.pieces = nextCell.pieces.filter((item) => item !== pieceId);
+    });
+  };
 
-        console.log(cells);
-      }),
-    );
-  }
+  const updateCellStates = (
+    _draft: TypeCell[],
+    activeCell: TypeCell,
+    nextCell: TypeCell,
+  ) => {
+    if (activeCell) {
+      activeCell.isActive = false;
+      activeCell.isPrevious = nextCell.pieces.length === 0 ? false : true;
+    }
+    nextCell.isActive = nextCell.pieces.length === 0 ? false : true;
+  };
 
-  function updateActiveCell(id: string, matches?: string[]) {
+  function updateCellsState(id: string, matches?: string[]) {
     console.log('CELL CLICKED: updateActiveCell');
 
     setCells(
       produce(cells, (draft) => {
         const nextCell = draft.find((item) => item.id === id)!;
         const activeCell = draft.find((item) => item.isActive);
-        const prevActiveCell = draft.find((item) => item.isPrevious);
 
-        // HAS MATCHES
-        // remove matching pieces
-        if (matches && matches.length > 0) {
-          matches.forEach((pieceId) => {
-            if (activeCell) {
-              activeCell.pieces = activeCell?.pieces.filter(
-                (item) => item !== pieceId,
-              );
-            }
-            nextCell.pieces = nextCell?.pieces.filter(
-              (item) => item !== pieceId,
-            );
-          });
+        // zero matches
+        if (matches && matches.length === 0) {
+          clearActiveCells(draft);
         }
 
-        // MACTCHES UNDEFINED -OR- HAS MATCHES
-        // Update isActive & isPrevious properties
-        if (typeof matches === 'undefined' || (matches && matches.length > 0)) {
-          console.log('two cells must be selected before comparison');
-          // negate previously active cell
-          if (prevActiveCell) {
-            prevActiveCell.isPrevious = false;
-          }
-          // set active cell to previous
-          // only if nextCell wasn't emptied
-          if (activeCell) {
-            activeCell.isActive = false;
-            activeCell.isPrevious = nextCell.pieces.length === 0 ? false : true;
-          }
-          // set new active cell, if not empty
-          nextCell.isActive = nextCell.pieces.length === 0 ? false : true;
+        // has matches
+        if (matches && matches.length > 0) {
+          removeMatchingPieces(draft, activeCell!, nextCell, matches);
+          clearActiveCells(draft);
+          updateCellStates(draft, activeCell!, nextCell);
+        }
+
+        // comparison hasn't happened yet
+        if (typeof matches === 'undefined') {
+          updateCellStates(draft, activeCell!, nextCell);
         }
       }),
     );
@@ -86,8 +84,7 @@ function Game() {
             id={id}
             pieces={pieces}
             isActive={isActive}
-            setActive={updateActiveCell}
-            resetCells={resetCells}
+            updateCellsState={updateCellsState}
             previous={cells.find((cell: TypeCell) => cell.isActive)}
           />
         );
