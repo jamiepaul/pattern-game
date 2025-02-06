@@ -10,9 +10,17 @@ type CellProps = {
   setActive: (id: string, matches?: string[]) => void;
   pieces: string[];
   previous: TypeCell | undefined;
+  resetCells: () => void;
 };
 
-function Cell({ id, isActive, setActive, pieces, previous }: CellProps) {
+function Cell({
+  id,
+  isActive,
+  setActive,
+  pieces,
+  previous,
+  resetCells,
+}: CellProps) {
   // console.log('RENDER: Cell Component');
 
   useEffect(() => {
@@ -45,7 +53,7 @@ function Cell({ id, isActive, setActive, pieces, previous }: CellProps) {
     if (matches.length === 0) {
       // reset cells
       // TODO: trigger "no match" message
-      // resetCells();
+      resetCells();
       return;
     }
 

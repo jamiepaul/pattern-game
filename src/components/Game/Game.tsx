@@ -12,6 +12,26 @@ function Game() {
   console.log('RENDER: Game Component');
   const [cells, setCells] = useState<TypeCell[]>(initialCells);
 
+  // ZERO MATCHES
+  function resetCells() {
+    console.log('CELL CLICKED: resetCells');
+    setCells(
+      produce(cells, (draft) => {
+        const activeCell = draft.find((item) => item.isActive);
+
+        // We never set isActive on the cell clicked,
+        // instead, we negate the current isActive property
+        //if (matches && matches.length === 0) {
+        if (activeCell) {
+          activeCell.isActive = false;
+        }
+        //}
+
+        console.log(cells);
+      }),
+    );
+  }
+
   function updateActiveCell(id: string, matches?: string[]) {
     console.log('CELL CLICKED: updateActiveCell');
 
@@ -20,15 +40,6 @@ function Game() {
         const nextCell = draft.find((item) => item.id === id)!;
         const activeCell = draft.find((item) => item.isActive);
         const prevActiveCell = draft.find((item) => item.isPrevious);
-
-        // ZERO MATCHES
-        // Don't set isActive on clicked cell
-        // Negate the current isActive property
-        if (matches && matches.length === 0) {
-          if (activeCell) {
-            activeCell.isActive = false;
-          }
-        }
 
         // MACTCHES UNDEFINED -OR- HAS MATCHES
         // Update isActive & isPrevious properties
@@ -75,6 +86,7 @@ function Game() {
             pieces={pieces}
             isActive={isActive}
             setActive={updateActiveCell}
+            resetCells={resetCells}
             previous={cells.find((cell: TypeCell) => cell.isActive)}
           />
         );
