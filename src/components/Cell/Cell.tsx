@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { TypeCell } from '@/globals';
 import { getMatches } from '@/utils';
 import VisuallyHidden from '../VisuallyHidden';
@@ -13,26 +13,20 @@ type CellProps = {
 };
 
 function Cell({ id, isActive, updateCellsState, pieces, previous }: CellProps) {
-  // console.log('RENDER: Cell Component');
+  const [showNoMatch, setShowNoMatch] = useState(false);
 
   useEffect(() => {
-    // watch pieces - if length is reduced, show message
-    // show message by injecting text, not w/ state
-    // setShowMessage(true);
-    // const timerId = setTimeout(() => {
-    //   setShowMessage(false);
-    // }, 2500);
-    // return () => {
-    //   clearTimeout(timerId);
-    //   setShowMessage(false);
-    // };
-  }, []);
+    if (setShowNoMatch) {
+      const timerId = setTimeout(() => {
+        setShowNoMatch(false);
+      }, 2500);
+      return () => clearTimeout(timerId);
+    }
+  }, [showNoMatch]);
 
   function handleClick() {
     // do nothing if same cell is clicked twice
-    if (isActive) {
-      return;
-    }
+    if (isActive) return;
 
     // only one cell has been clicked, comparison can't be run
     if (!previous) {
@@ -47,7 +41,7 @@ function Cell({ id, isActive, updateCellsState, pieces, previous }: CellProps) {
     // console.log(`Matches: ${matches.join(', ')}`);
 
     if (matches.length === 0) {
-      // TODO: trigger "no match" message
+      setShowNoMatch(true);
     }
 
     updateCellsState(id, matches);
@@ -60,7 +54,7 @@ function Cell({ id, isActive, updateCellsState, pieces, previous }: CellProps) {
       data-status={isActive ? 'active' : 'default'}
       data-pieces={pieces.length}
     >
-      <div className={styles.message}>{/* <p>no match</p> */}</div>
+      <div className={styles.message}>{showNoMatch && <p>no match</p>}</div>
       <button className={styles.btn} onClick={handleClick}>
         <VisuallyHidden>
           {`Select cell with pieces ${pieces.join(', ')}`}
