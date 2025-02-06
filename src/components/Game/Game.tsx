@@ -12,12 +12,13 @@ function Game() {
   console.log('RENDER: Game Component');
   const [cells, setCells] = useState<TypeCell[]>(initialCells);
 
-  const clearActiveCells = (draft: TypeCell[]) => {
-    const activeCell = draft.find((item) => item.status === 'active');
+  const resetCellStatuses = (
+    activeCell: TypeCell | undefined,
+    prevActiveCell: TypeCell | undefined,
+  ) => {
     if (activeCell) {
       activeCell.status = 'default';
     }
-    const prevActiveCell = draft.find((item) => item.status === 'previous');
     if (prevActiveCell) {
       prevActiveCell.status = 'default';
     }
@@ -66,22 +67,21 @@ function Game() {
   }
 
   function updateCellsState(id: string, matches?: string[]) {
-    console.log('CELL CLICKED: updateActiveCell');
-
     setCells(
       produce(cells, (draft) => {
         const nextCell = draft.find((item) => item.id === id)!;
         const activeCell = draft.find((item) => item.status === 'active');
+        const prevActiveCell = draft.find((item) => item.status === 'previous');
 
         // zero matches
         if (matches && matches.length === 0) {
-          clearActiveCells(draft);
+          resetCellStatuses(activeCell, prevActiveCell);
         }
 
         // has matches
         if (matches && matches.length > 0) {
           removeMatchingPieces(draft, activeCell!, nextCell, matches);
-          clearActiveCells(draft);
+          resetCellStatuses(activeCell, prevActiveCell); // needed?
           updateCellStates(draft, activeCell!, nextCell);
           handleCellEmptied(draft, activeCell!, nextCell);
         }
