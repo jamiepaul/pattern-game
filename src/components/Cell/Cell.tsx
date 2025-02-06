@@ -37,6 +37,11 @@ function Cell({
   }, []);
 
   function handleClick() {
+    // do nothing if same cell is clicked twice
+    if (isActive) {
+      return;
+    }
+
     if (!previous) {
       // only one cell has been clicked
       // we need to update cells state to run comparison on next cell click
