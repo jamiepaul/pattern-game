@@ -41,23 +41,6 @@ function Game() {
         const activeCell = draft.find((item) => item.isActive);
         const prevActiveCell = draft.find((item) => item.isPrevious);
 
-        // MACTCHES UNDEFINED -OR- HAS MATCHES
-        // Update isActive & isPrevious properties
-        if (typeof matches === 'undefined' || (matches && matches.length > 0)) {
-          console.log('two cells must be selected before comparison');
-          // negate previously active cell
-          if (prevActiveCell) {
-            prevActiveCell.isPrevious = false;
-          }
-          // set active cell to previous
-          if (activeCell) {
-            activeCell.isActive = false;
-            activeCell.isPrevious = true;
-          }
-          // set new active cell
-          nextCell.isActive = true;
-        }
-
         // HAS MATCHES
         // remove matching pieces
         if (matches && matches.length > 0) {
@@ -71,6 +54,24 @@ function Game() {
               (item) => item !== pieceId,
             );
           });
+        }
+
+        // MACTCHES UNDEFINED -OR- HAS MATCHES
+        // Update isActive & isPrevious properties
+        if (typeof matches === 'undefined' || (matches && matches.length > 0)) {
+          console.log('two cells must be selected before comparison');
+          // negate previously active cell
+          if (prevActiveCell) {
+            prevActiveCell.isPrevious = false;
+          }
+          // set active cell to previous
+          // only if nextCell wasn't emptied
+          if (activeCell) {
+            activeCell.isActive = false;
+            activeCell.isPrevious = nextCell.pieces.length === 0 ? false : true;
+          }
+          // set new active cell, if not empty
+          nextCell.isActive = nextCell.pieces.length === 0 ? false : true;
         }
       }),
     );

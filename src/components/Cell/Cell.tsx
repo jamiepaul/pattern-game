@@ -51,7 +51,6 @@ function Cell({
     console.log(`Matches: ${matches.join(', ')}`);
 
     if (matches.length === 0) {
-      // reset cells
       // TODO: trigger "no match" message
       resetCells();
       return;
