@@ -1,19 +1,34 @@
 import { useEffect, useState } from 'react';
-import { TypeCell } from '@/globals';
+import { CellStatus, TypeCell } from '@/globals';
 import { getMatches } from '@/utils';
 import VisuallyHidden from '../VisuallyHidden';
 import styles from './Cell.module.css';
 
 type CellProps = {
   id: string;
-  isActive: boolean;
-  updateCellsState: (id: string, matches?: string[]) => void;
   pieces: string[];
+  isActive: boolean;
+  isLastEmptied?: boolean;
   previous: TypeCell | undefined;
+  updateCellsState: (id: string, matches?: string[]) => void;
 };
 
-function Cell({ id, isActive, updateCellsState, pieces, previous }: CellProps) {
+function Cell({
+  id,
+  pieces,
+  isActive,
+  isLastEmptied,
+  previous,
+  updateCellsState,
+}: CellProps) {
   const [showNoMatch, setShowNoMatch] = useState(false);
+
+  let cellStatus: CellStatus = 'default';
+  if (isLastEmptied && pieces.length === 0) {
+    cellStatus = 'empty';
+  } else if (isActive) {
+    cellStatus = 'active';
+  }
 
   useEffect(() => {
     if (setShowNoMatch) {
@@ -51,7 +66,7 @@ function Cell({ id, isActive, updateCellsState, pieces, previous }: CellProps) {
     <div
       id={id}
       className={styles.cell}
-      data-status={isActive ? 'active' : 'default'}
+      data-status={cellStatus}
       data-pieces={pieces.length}
     >
       <div className={styles.message}>{showNoMatch && <p>no match</p>}</div>

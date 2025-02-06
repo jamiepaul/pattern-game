@@ -42,10 +42,25 @@ function Game() {
   ) => {
     if (activeCell) {
       activeCell.isActive = false;
-      activeCell.isPrevious = nextCell.pieces.length === 0 ? false : true;
+      activeCell.isPrevious = true;
     }
-    nextCell.isActive = nextCell.pieces.length === 0 ? false : true;
+    nextCell.isActive = true;
   };
+
+  function handleCellEmptied(
+    draft: TypeCell[],
+    activeCell: TypeCell,
+    nextCell: TypeCell,
+  ) {
+    // Clear any previous lastEmptied flags
+    draft.forEach((cell) => (cell.isLastEmptied = false));
+
+    if (activeCell) {
+      activeCell.isPrevious = false;
+    }
+    nextCell.isActive = false;
+    nextCell.isLastEmptied = true;
+  }
 
   function updateCellsState(id: string, matches?: string[]) {
     console.log('CELL CLICKED: updateActiveCell');
@@ -65,6 +80,7 @@ function Game() {
           removeMatchingPieces(draft, activeCell!, nextCell, matches);
           clearActiveCells(draft);
           updateCellStates(draft, activeCell!, nextCell);
+          handleCellEmptied(draft, activeCell!, nextCell);
         }
 
         // comparison hasn't happened yet
@@ -77,15 +93,16 @@ function Game() {
 
   return (
     <section className={styles.grid}>
-      {cells.map(({ id, pieces, isActive }) => {
+      {cells.map(({ id, pieces, isActive, isLastEmptied }) => {
         return (
           <Cell
             key={id}
             id={id}
             pieces={pieces}
             isActive={isActive}
-            updateCellsState={updateCellsState}
+            isLastEmptied={isLastEmptied}
             previous={cells.find((cell: TypeCell) => cell.isActive)}
+            updateCellsState={updateCellsState}
           />
         );
       })}

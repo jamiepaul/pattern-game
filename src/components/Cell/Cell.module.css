@@ -19,13 +19,8 @@
   }
 
   /* TODO: animate dashed border */
-  .cell[data-status=active][data-pieces="0"] & {
-    border-style: dashed;
-  }
-
-  /* TODO: remove later, prev shouldnt have a visual state */
-  .cell[data-status=previous] & {
-    border: var(--border-width) solid #cbedff;
+  .cell[data-status=empty] & {
+    border: var(--border-width) dashed var(--border-color);
   }
 }
 

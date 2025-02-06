@@ -3,4 +3,7 @@ export type TypeCell = {
   pieces: string[];
   isActive: boolean;
   isPrevious: boolean;
+  isLastEmptied?: boolean;
 };
+
+export type CellStatus = 'default' | 'active' | 'empty';
