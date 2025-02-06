@@ -12,20 +12,7 @@ function Game() {
   console.log('RENDER: Game Component');
   const [cells, setCells] = useState<TypeCell[]>(initialCells);
 
-  const resetCellStatuses = (
-    activeCell: TypeCell | undefined,
-    prevActiveCell: TypeCell | undefined,
-  ) => {
-    if (activeCell) {
-      activeCell.status = 'default';
-    }
-    if (prevActiveCell) {
-      prevActiveCell.status = 'default';
-    }
-  };
-
   const removeMatchingPieces = (
-    _draft: TypeCell[],
     activeCell: TypeCell,
     nextCell: TypeCell,
     matches: string[],
@@ -36,35 +23,32 @@ function Game() {
     });
   };
 
-  const updateCellStates = (
-    draft: TypeCell[],
-    activeCell: TypeCell,
+  const resetCellStatuses = (
+    prevActiveCell: TypeCell | undefined,
+    activeCell?: TypeCell | undefined,
+  ) => {
+    console.log('resetCellStatuses');
+    if (prevActiveCell) {
+      prevActiveCell.status = 'default';
+    }
+    if (activeCell) {
+      activeCell.status = 'default';
+    }
+  };
+
+  const updateCellStatuses = (
+    emptyCell: TypeCell | undefined,
+    activeCell: TypeCell | undefined,
     nextCell: TypeCell,
   ) => {
-    const emptyCell = draft.find((item) => item.status === 'empty');
     if (emptyCell) {
       emptyCell.status = 'default';
     }
     if (activeCell) {
-      activeCell.status = 'previous';
+      activeCell.status = nextCell.pieces.length > 0 ? 'previous' : 'default';
     }
-    nextCell.status = 'active';
+    nextCell.status = nextCell.pieces.length > 0 ? 'active' : 'empty';
   };
-
-  function handleCellEmptied(
-    _draft: TypeCell[],
-    activeCell: TypeCell,
-    nextCell: TypeCell,
-  ) {
-    if (nextCell.pieces.length > 0) {
-      return;
-    }
-
-    if (activeCell) {
-      activeCell.status = 'default';
-    }
-    nextCell.status = 'empty';
-  }
 
   function updateCellsState(id: string, matches?: string[]) {
     setCells(
@@ -72,23 +56,23 @@ function Game() {
         const nextCell = draft.find((item) => item.id === id)!;
         const activeCell = draft.find((item) => item.status === 'active');
         const prevActiveCell = draft.find((item) => item.status === 'previous');
+        const emptyCell = draft.find((item) => item.status === 'empty');
 
         // zero matches
         if (matches && matches.length === 0) {
-          resetCellStatuses(activeCell, prevActiveCell);
+          resetCellStatuses(prevActiveCell, activeCell);
         }
 
         // has matches
         if (matches && matches.length > 0) {
-          removeMatchingPieces(draft, activeCell!, nextCell, matches);
-          resetCellStatuses(activeCell, prevActiveCell); // needed?
-          updateCellStates(draft, activeCell!, nextCell);
-          handleCellEmptied(draft, activeCell!, nextCell);
+          removeMatchingPieces(activeCell!, nextCell!, matches);
+          resetCellStatuses(prevActiveCell);
+          updateCellStatuses(emptyCell, activeCell, nextCell);
         }
 
         // comparison hasn't happened yet
         if (typeof matches === 'undefined') {
-          updateCellStates(draft, activeCell!, nextCell);
+          updateCellStatuses(emptyCell, activeCell, nextCell);
         }
       }),
     );
