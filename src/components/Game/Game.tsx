@@ -13,13 +13,13 @@ function Game() {
   const [cells, setCells] = useState<TypeCell[]>(initialCells);
 
   const clearActiveCells = (draft: TypeCell[]) => {
-    const activeCell = draft.find((item) => item.isActive);
+    const activeCell = draft.find((item) => item.status === 'active');
     if (activeCell) {
-      activeCell.isActive = false;
+      activeCell.status = 'default';
     }
-    const prevActiveCell = draft.find((item) => item.isPrevious);
+    const prevActiveCell = draft.find((item) => item.status === 'previous');
     if (prevActiveCell) {
-      prevActiveCell.isPrevious = false;
+      prevActiveCell.status = 'default';
     }
   };
 
@@ -36,30 +36,33 @@ function Game() {
   };
 
   const updateCellStates = (
-    _draft: TypeCell[],
-    activeCell: TypeCell,
-    nextCell: TypeCell,
-  ) => {
-    if (activeCell) {
-      activeCell.isActive = false;
-      activeCell.isPrevious = true;
-    }
-    nextCell.isActive = true;
-  };
-
-  function handleCellEmptied(
     draft: TypeCell[],
     activeCell: TypeCell,
     nextCell: TypeCell,
+  ) => {
+    const emptyCell = draft.find((item) => item.status === 'empty');
+    if (emptyCell) {
+      emptyCell.status = 'default';
+    }
+    if (activeCell) {
+      activeCell.status = 'previous';
+    }
+    nextCell.status = 'active';
+  };
+
+  function handleCellEmptied(
+    _draft: TypeCell[],
+    activeCell: TypeCell,
+    nextCell: TypeCell,
   ) {
-    // Clear any previous lastEmptied flags
-    draft.forEach((cell) => (cell.isLastEmptied = false));
+    if (nextCell.pieces.length > 0) {
+      return;
+    }
 
     if (activeCell) {
-      activeCell.isPrevious = false;
+      activeCell.status = 'default';
     }
-    nextCell.isActive = false;
-    nextCell.isLastEmptied = true;
+    nextCell.status = 'empty';
   }
 
   function updateCellsState(id: string, matches?: string[]) {
@@ -68,7 +71,7 @@ function Game() {
     setCells(
       produce(cells, (draft) => {
         const nextCell = draft.find((item) => item.id === id)!;
-        const activeCell = draft.find((item) => item.isActive);
+        const activeCell = draft.find((item) => item.status === 'active');
 
         // zero matches
         if (matches && matches.length === 0) {
@@ -91,17 +94,18 @@ function Game() {
     );
   }
 
+  console.log(cells);
+
   return (
     <section className={styles.grid}>
-      {cells.map(({ id, pieces, isActive, isLastEmptied }) => {
+      {cells.map(({ id, status, pieces }) => {
         return (
           <Cell
             key={id}
             id={id}
+            status={status}
             pieces={pieces}
-            isActive={isActive}
-            isLastEmptied={isLastEmptied}
-            previous={cells.find((cell: TypeCell) => cell.isActive)}
+            previous={cells.find((cell: TypeCell) => cell.status === 'active')}
             updateCellsState={updateCellsState}
           />
         );

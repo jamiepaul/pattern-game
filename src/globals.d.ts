@@ -1,9 +1,7 @@
 export type TypeCell = {
   id: string;
+  status: string;
   pieces: string[];
-  isActive: boolean;
-  isPrevious: boolean;
-  isLastEmptied?: boolean;
 };
 
-export type CellStatus = 'default' | 'active' | 'empty';
+export type CellStatus = 'default' | 'previous' | 'active' | 'empty';

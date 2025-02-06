@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CellStatus, TypeCell } from '@/globals';
 import { getMatches } from '@/utils';
 import VisuallyHidden from '../VisuallyHidden';
@@ -6,29 +7,14 @@ import styles from './Cell.module.css';
 
 type CellProps = {
   id: string;
+  status: string;
   pieces: string[];
-  isActive: boolean;
-  isLastEmptied?: boolean;
   previous: TypeCell | undefined;
   updateCellsState: (id: string, matches?: string[]) => void;
 };
 
-function Cell({
-  id,
-  pieces,
-  isActive,
-  isLastEmptied,
-  previous,
-  updateCellsState,
-}: CellProps) {
+function Cell({ id, status, pieces, previous, updateCellsState }: CellProps) {
   const [showNoMatch, setShowNoMatch] = useState(false);
-
-  let cellStatus: CellStatus = 'default';
-  if (isLastEmptied && pieces.length === 0) {
-    cellStatus = 'empty';
-  } else if (isActive) {
-    cellStatus = 'active';
-  }
 
   useEffect(() => {
     if (setShowNoMatch) {
@@ -41,7 +27,7 @@ function Cell({
 
   function handleClick() {
     // do nothing if same cell is clicked twice
-    if (isActive) return;
+    if (status === 'active') return;
 
     // only one cell has been clicked, comparison can't be run
     if (!previous) {
@@ -66,7 +52,7 @@ function Cell({
     <div
       id={id}
       className={styles.cell}
-      data-status={cellStatus}
+      data-status={status}
       data-pieces={pieces.length}
     >
       <div className={styles.message}>{showNoMatch && <p>no match</p>}</div>
