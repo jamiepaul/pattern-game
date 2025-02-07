@@ -1,0 +1,29 @@
+.banner {
+  background-color: white;
+  border: 0.3rem dodgerblue solid;
+  color: dodgerblue;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  width: 600px;
+  padding: 2.3em 2em 3em;
+
+  &.won {
+    border-color: lightseagreen;
+    color: lightseagreen;
+  }
+}
+
+.heading {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-lg);
+}
+
+.text {
+  font-family: var(--font-family-default);
+  font-size: var(--font-size-md);
+
+  .heading+& {
+    margin-block-start: 0.3em;
+  }
+}

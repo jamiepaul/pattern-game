@@ -5,6 +5,7 @@ import { createCells } from '@/helpers/game.helpers';
 import { GameStatus, GameCell } from '@/globals';
 import Cell from '@components/Cell';
 import styles from './Game.module.css';
+import Banner from '../Banner';
 
 // Create new game cells
 const initialCells = createCells(GRID_CELLS);
@@ -118,6 +119,7 @@ function Game() {
           <li>Status: {gameStatus}</li>
         </ul>
       </aside>
+      {gameStatus !== 'running' && <Banner status={gameStatus} />}
     </>
   );
 }

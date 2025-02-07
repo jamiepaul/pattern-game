@@ -9,12 +9,39 @@
   --font-size-sm: clamp(0.875rem, 0.85rem + 0.125vw, 1rem);
 }
 
+body {
+  font-family: var(--font-family-default);
+  font-size: 16px;
+  font-style: normal;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  line-height: 1.5;
+  color-scheme: light dark;
+  color: light-dark(#213547, rgba(255, 255, 255, 0.87));
+  background-color: light-dark(#ffffff, #242424);
+  text-rendering: optimizeSpeed;
+  margin: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 #root {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   min-height: 100dvh;
+}
+
+/* TODO: Add normalize layer */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
 }
 
 a {
