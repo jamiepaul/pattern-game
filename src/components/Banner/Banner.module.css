@@ -1,7 +1,8 @@
 .banner {
+  --status-color: dodgerblue;
   background-color: white;
-  border: 0.3rem dodgerblue solid;
-  color: dodgerblue;
+  border: 0.3rem solid var(--status-color);
+  color: var(--status-color);
   display: flex;
   flex-direction: column;
   place-items: center;
@@ -9,8 +10,7 @@
   padding: 2.3em 2em 3em;
 
   &.won {
-    border-color: lightseagreen;
-    color: lightseagreen;
+    --status-color: lightseagreen;
   }
 }
 
@@ -25,5 +25,23 @@
 
   .heading+& {
     margin-block-start: 0.3em;
+  }
+}
+
+.btn {
+  border: 0.2rem solid var(--status-color);
+  border-radius: 0.25rem;
+  background-color: transparent;
+  color: var(--status-color);
+  font-family: var(--font-family-display);
+  letter-spacing: 0.025rem;
+  margin-block-start: 1em;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--status-color);
+    color: white;
   }
 }

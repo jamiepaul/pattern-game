@@ -25,6 +25,13 @@ function Game() {
     setGameStatus(noMatchCount === 0 ? 'won' : 'complete');
   }, [cells, noMatchCount]);
 
+  const handleRestart = () => {
+    const newCells = createCells(GRID_CELLS);
+    setCells(newCells);
+    setGameStatus('running');
+    setNoMatchCount(0);
+  };
+
   const removeMatchingPieces = (
     activeCell: GameCell,
     nextCell: GameCell,
@@ -62,7 +69,7 @@ function Game() {
     nextCell.status = nextCell.pieces.length > 0 ? 'active' : 'empty';
   };
 
-  function updateCellsState(id: string, matches?: string[]) {
+  const updateCellsState = (id: string, matches?: string[]) => {
     if (matches && matches.length === 0) {
       setNoMatchCount((c) => c + 1);
     }
@@ -92,7 +99,7 @@ function Game() {
         }
       }),
     );
-  }
+  };
 
   return (
     <>
@@ -112,7 +119,9 @@ function Game() {
           );
         })}
       </section>
-      {gameStatus !== 'running' && <Banner status={gameStatus} />}
+      {gameStatus !== 'running' && (
+        <Banner status={gameStatus} resetGame={handleRestart} />
+      )}
     </>
   );
 }

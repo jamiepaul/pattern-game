@@ -3,9 +3,10 @@ import styles from './Banner.module.css';
 
 type BannerProps = {
   status: GameStatus;
+  resetGame: () => void;
 };
 
-function Banner({ status }: BannerProps) {
+function Banner({ status, resetGame }: BannerProps) {
   const isWon = status === 'won';
   return (
     <aside className={`${styles.banner} ${isWon ? styles.won : ''}`}>
@@ -15,6 +16,9 @@ function Banner({ status }: BannerProps) {
           ? "You're unstoppable. A modern-day genius. What can't you do?"
           : 'Well, that was unsatisfying. Shake it off. I believe in you.'}
       </p>
+      <button className={styles.btn} onClick={resetGame}>
+        Play again
+      </button>
     </aside>
   );
 }
