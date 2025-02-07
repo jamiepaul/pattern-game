@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { TypeCell } from '@/globals';
+import { GameCell } from '@/globals';
 import { random } from '@/utils';
 import { GAME_SET } from '@/constants';
 
@@ -18,7 +18,7 @@ export const getMatches = (
   return matching;
 };
 
-export const createCells = (amountOfCells: number): TypeCell[] => {
+export const createCells = (amountOfCells: number): GameCell[] => {
   const output = [];
   const gamePieces = getGamePieces(amountOfCells);
 

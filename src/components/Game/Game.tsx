@@ -112,13 +112,6 @@ function Game() {
           );
         })}
       </section>
-      <aside>
-        <h3>Current Game</h3>
-        <ul>
-          <li>No Matches: {noMatchCount}</li>
-          <li>Status: {gameStatus}</li>
-        </ul>
-      </aside>
       {gameStatus !== 'running' && <Banner status={gameStatus} />}
     </>
   );

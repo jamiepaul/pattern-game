@@ -35,11 +35,6 @@ function Cell({ id, status, pieces, previous, updateCellsState }: CellProps) {
     }
 
     const matches = getMatches(previous.pieces, pieces);
-    // console.log(
-    //   `COMPARING: Previous (${previous.pieces.join(', ')}) and Active (${pieces.join(', ')})`,
-    // );
-    // console.log(`Matches: ${matches.join(', ')}`);
-
     if (matches.length === 0) {
       setShowNoMatch(true);
     }
@@ -61,10 +56,13 @@ function Cell({ id, status, pieces, previous, updateCellsState }: CellProps) {
         </VisuallyHidden>
       </button>
       <div className={styles.pieces}>
-        {pieces.map((item) => (
-          <div key={item} id={item} data-piece={item}>
-            {item}
+        {pieces.map((pieceId) => (
+          <div key={pieceId} data-piece={pieceId}>
+            {pieceId}
           </div>
+          // <svg key={pieceId} data-piece={pieceId}>
+          //   <use xlinkHref={`/svg-sprite.svg#${pieceId}`} />
+          // </svg>
         ))}
       </div>
     </div>
