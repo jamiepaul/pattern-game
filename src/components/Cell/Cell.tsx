@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CellStatus, TypeCell } from '@/globals';
-import { getMatches } from '@/utils';
+import { getMatches } from '@/helpers/game.helpers';
 import VisuallyHidden from '../VisuallyHidden';
 import styles from './Cell.module.css';
 

@@ -49,6 +49,30 @@
   background-color: coral;
 }
 
+.pieces [data-piece=A3] {
+  background-color: darkgoldenrod;
+}
+
+.pieces [data-piece=A4] {
+  background-color: deeppink;
+}
+
+.pieces [data-piece=A5] {
+  background-color: brown;
+}
+
+.pieces [data-piece=A6] {
+  background-color: greenyellow;
+}
+
+.pieces [data-piece=A7] {
+  background-color: aquamarine;
+}
+
+.pieces [data-piece=A8] {
+  background-color: darkblue;
+}
+
 .pieces [data-piece=B1] {
   background-color: blueviolet;
 }

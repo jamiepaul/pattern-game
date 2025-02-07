@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { produce } from 'immer';
-import { createCells } from '@/utils';
-
+import { GRID_CELLS } from '@/constants';
+import { createCells } from '@/helpers/game.helpers';
 import { TypeCell } from '@/globals';
 import Cell from '@components/Cell';
 import styles from './Game.module.css';
 
-const initialCells = createCells(6);
+// Create new game cells
+const initialCells = createCells(GRID_CELLS);
 
 function Game() {
   console.log('RENDER: Game Component');
@@ -77,8 +78,6 @@ function Game() {
       }),
     );
   }
-
-  console.log(cells);
 
   return (
     <section className={styles.grid}>
