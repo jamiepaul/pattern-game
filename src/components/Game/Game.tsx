@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { produce } from 'immer';
 import { GRID_CELLS } from '@/constants';
 import { createCells } from '@/helpers/game.helpers';
-import { TypeCell } from '@/globals';
+import { GameStatus, GameCell } from '@/globals';
 import Cell from '@components/Cell';
 import styles from './Game.module.css';
 
@@ -11,11 +11,22 @@ const initialCells = createCells(GRID_CELLS);
 
 function Game() {
   console.log('RENDER: Game Component');
-  const [cells, setCells] = useState<TypeCell[]>(initialCells);
+  const [cells, setCells] = useState<GameCell[]>(initialCells);
+  const [gameStatus, setGameStatus] = useState<GameStatus>('running');
+  const [noMatchCount, setNoMatchCount] = useState(0);
+
+  useEffect(() => {
+    const allEmpty = cells.every((cell) => cell.pieces.length === 0);
+    if (!allEmpty) {
+      return;
+    }
+
+    setGameStatus(noMatchCount === 0 ? 'won' : 'complete');
+  }, [cells, noMatchCount]);
 
   const removeMatchingPieces = (
-    activeCell: TypeCell,
-    nextCell: TypeCell,
+    activeCell: GameCell,
+    nextCell: GameCell,
     matches: string[],
   ) => {
     matches.forEach((pieceId) => {
@@ -25,10 +36,9 @@ function Game() {
   };
 
   const resetCellStatuses = (
-    prevActiveCell: TypeCell | undefined,
-    activeCell?: TypeCell | undefined,
+    prevActiveCell: GameCell | undefined,
+    activeCell?: GameCell | undefined,
   ) => {
-    console.log('resetCellStatuses');
     if (prevActiveCell) {
       prevActiveCell.status = 'default';
     }
@@ -38,9 +48,9 @@ function Game() {
   };
 
   const updateCellStatuses = (
-    emptyCell: TypeCell | undefined,
-    activeCell: TypeCell | undefined,
-    nextCell: TypeCell,
+    emptyCell: GameCell | undefined,
+    activeCell: GameCell | undefined,
+    nextCell: GameCell,
   ) => {
     if (emptyCell) {
       emptyCell.status = 'default';
@@ -52,6 +62,10 @@ function Game() {
   };
 
   function updateCellsState(id: string, matches?: string[]) {
+    if (matches && matches.length === 0) {
+      setNoMatchCount((c) => c + 1);
+    }
+
     setCells(
       produce(cells, (draft) => {
         const nextCell = draft.find((item) => item.id === id)!;
@@ -80,20 +94,31 @@ function Game() {
   }
 
   return (
-    <section className={styles.grid}>
-      {cells.map(({ id, status, pieces }) => {
-        return (
-          <Cell
-            key={id}
-            id={id}
-            status={status}
-            pieces={pieces}
-            previous={cells.find((cell: TypeCell) => cell.status === 'active')}
-            updateCellsState={updateCellsState}
-          />
-        );
-      })}
-    </section>
+    <>
+      <section className={styles.grid}>
+        {cells.map(({ id, status, pieces }) => {
+          return (
+            <Cell
+              key={id}
+              id={id}
+              status={status}
+              pieces={pieces}
+              previous={cells.find(
+                (cell: GameCell) => cell.status === 'active',
+              )}
+              updateCellsState={updateCellsState}
+            />
+          );
+        })}
+      </section>
+      <aside>
+        <h3>Current Game</h3>
+        <ul>
+          <li>No Matches: {noMatchCount}</li>
+          <li>Status: {gameStatus}</li>
+        </ul>
+      </aside>
+    </>
   );
 }
 

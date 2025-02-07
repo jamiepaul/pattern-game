@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CellStatus, TypeCell } from '@/globals';
+import { CellStatus, GameCell } from '@/globals';
 import { getMatches } from '@/helpers/game.helpers';
 import VisuallyHidden from '../VisuallyHidden';
 import styles from './Cell.module.css';
@@ -8,7 +8,7 @@ type CellProps = {
   id: string;
   status: CellStatus;
   pieces: string[];
-  previous: TypeCell | undefined;
+  previous: GameCell | undefined;
   updateCellsState: (id: string, matches?: string[]) => void;
 };
 
