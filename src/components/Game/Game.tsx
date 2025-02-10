@@ -12,9 +12,10 @@ const initialCells = createCells(GRID_CELLS);
 
 function Game() {
   console.log('RENDER: Game Component');
-  const [cells, setCells] = useState<GameCell[]>(initialCells);
   const [gameStatus, setGameStatus] = useState<GameStatus>('running');
   const [noMatchCount, setNoMatchCount] = useState(0);
+  const [streak, setStreak] = useState<number>(0);
+  const [cells, setCells] = useState<GameCell[]>(initialCells);
 
   useEffect(() => {
     const allEmpty = cells.every((cell) => cell.pieces.length === 0);
@@ -70,9 +71,14 @@ function Game() {
   };
 
   const updateCellsState = (id: string, matches?: string[]) => {
-    // zero matches
-    if (matches && matches.length === 0) {
-      setNoMatchCount((c) => c + 1);
+    if (matches) {
+      // zero matches
+      if (matches.length === 0) {
+        setNoMatchCount((c) => c + 1);
+        setStreak(0);
+      } else {
+        setStreak((s) => s + 1);
+      }
     }
 
     setCells(
@@ -104,23 +110,26 @@ function Game() {
 
   return (
     <>
-      <section className={styles.grid}>
-        {cells.map(({ id, status, pieces }) => {
-          return (
-            <Cell
-              key={id}
-              id={id}
-              status={status}
-              disabled={gameStatus !== 'running'}
-              pieces={pieces}
-              previous={cells.find(
-                (cell: GameCell) => cell.status === 'active',
-              )}
-              updateCellsState={updateCellsState}
-            />
-          );
-        })}
-      </section>
+      <div className="game-wrapper">
+        <section className={styles.grid}>
+          {cells.map(({ id, status, pieces }) => {
+            return (
+              <Cell
+                key={id}
+                id={id}
+                status={status}
+                disabled={gameStatus !== 'running'}
+                pieces={pieces}
+                previous={cells.find(
+                  (cell: GameCell) => cell.status === 'active',
+                )}
+                updateCellsState={updateCellsState}
+              />
+            );
+          })}
+        </section>
+        <div className="sidebar">Streak: {streak}</div>
+      </div>
       {gameStatus !== 'running' && (
         <Banner status={gameStatus} resetGame={handleRestart} />
       )}
