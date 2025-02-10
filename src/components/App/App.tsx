@@ -4,13 +4,13 @@ import styles from './App.module.css';
 function App() {
   return (
     <>
-      <header className={`${styles.container} ${styles.header}`}>
+      <header className={`container ${styles.header}`}>
         <h1>Patterns Game</h1>
       </header>
-      <main className={styles.container}>
+      <main className="main container">
         <Game />
       </main>
-      <footer className={`${styles.container} ${styles.footer}`}>
+      <footer className={`container ${styles.footer}`}>
         <p>
           Icons by{' '}
           <a target="_blank" href="https://icons8.com">

@@ -1,10 +1,11 @@
 .cell {
   --border-width: 0.35em;
   --border-color: #099cff;
+  background-color: white;
   position: relative;
-  width: 9em;
+  width: auto;
   aspect-ratio: 1;
-  margin: 1px;
+  margin: 0.125em;
 }
 
 .btn {

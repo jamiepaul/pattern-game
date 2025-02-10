@@ -1,13 +1,9 @@
-.container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
 .header {
-  padding-block: 1em;
+  padding-block: 2em 3em;
+  text-align: center;
 
   h1 {
+    font-family: var(--font-family-display);
     font-size: clamp(2rem, 1.833rem + 0.833vw, 2.5rem);
   }
 }
@@ -15,4 +11,5 @@
 .footer {
   margin-block-start: auto;
   padding-block: 2em 1em;
+  text-align: center;
 }
