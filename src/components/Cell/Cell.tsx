@@ -6,13 +6,21 @@ import styles from './Cell.module.css';
 
 type CellProps = {
   id: string;
+  disabled: boolean;
   status: CellStatus;
   pieces: string[];
   previous: GameCell | undefined;
   updateCellsState: (id: string, matches?: string[]) => void;
 };
 
-function Cell({ id, status, pieces, previous, updateCellsState }: CellProps) {
+function Cell({
+  id,
+  disabled,
+  status,
+  pieces,
+  previous,
+  updateCellsState,
+}: CellProps) {
   const [showNoMatch, setShowNoMatch] = useState(false);
 
   useEffect(() => {
@@ -25,8 +33,8 @@ function Cell({ id, status, pieces, previous, updateCellsState }: CellProps) {
   }, [showNoMatch]);
 
   function handleClick() {
-    // do nothing if same cell is clicked twice
-    if (status === 'active') return;
+    // do nothing if same cell is clicked twice OR game is over
+    if (status === 'active' || disabled) return;
 
     // only one cell has been clicked, comparison can't be run
     if (!previous) {
@@ -46,7 +54,7 @@ function Cell({ id, status, pieces, previous, updateCellsState }: CellProps) {
     <div
       id={id}
       className={styles.cell}
-      data-status={status}
+      data-status={disabled ? 'default' : status}
       data-pieces={pieces.length}
     >
       <div className={styles.message}>{showNoMatch && <p>no match</p>}</div>

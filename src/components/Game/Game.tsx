@@ -70,6 +70,7 @@ function Game() {
   };
 
   const updateCellsState = (id: string, matches?: string[]) => {
+    // zero matches
     if (matches && matches.length === 0) {
       setNoMatchCount((c) => c + 1);
     }
@@ -110,6 +111,7 @@ function Game() {
               key={id}
               id={id}
               status={status}
+              disabled={gameStatus !== 'running'}
               pieces={pieces}
               previous={cells.find(
                 (cell: GameCell) => cell.status === 'active',
