@@ -15,6 +15,7 @@ function Game() {
   const [gameStatus, setGameStatus] = useState<GameStatus>('running');
   const [noMatchCount, setNoMatchCount] = useState(0);
   const [streak, setStreak] = useState<number>(0);
+  const [longestStreak, setLongestStreak] = useState<number>(0);
   const [cells, setCells] = useState<GameCell[]>(initialCells);
 
   useEffect(() => {
@@ -70,15 +71,26 @@ function Game() {
     nextCell.status = nextCell.pieces.length > 0 ? 'active' : 'empty';
   };
 
+  const updateCounts = (hasMatches: boolean) => {
+    if (!hasMatches) {
+      setNoMatchCount((c) => c + 1);
+      setStreak(0);
+      return;
+    }
+
+    setLongestStreak((ls) => {
+      if (ls > streak) {
+        return ls;
+      } else {
+        return ls + 1;
+      }
+    });
+    setStreak((s) => s + 1);
+  };
+
   const updateCellsState = (id: string, matches?: string[]) => {
     if (matches) {
-      // zero matches
-      if (matches.length === 0) {
-        setNoMatchCount((c) => c + 1);
-        setStreak(0);
-      } else {
-        setStreak((s) => s + 1);
-      }
+      updateCounts(matches.length > 0);
     }
 
     setCells(
@@ -128,7 +140,14 @@ function Game() {
             );
           })}
         </section>
-        <div className="sidebar">Streak: {streak}</div>
+        <div className="sidebar">
+          <dl>
+            <dt>Streak:</dt>
+            <dd>{streak}</dd>
+            <dt>Longest Streak:</dt>
+            <dd>{longestStreak}</dd>
+          </dl>
+        </div>
       </div>
       {gameStatus !== 'running' && (
         <Banner status={gameStatus} resetGame={handleRestart} />
