@@ -13,7 +13,7 @@
   border: 0;
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 10;
 
   .cell[data-status=active] & {
     border: var(--border-width) solid var(--border-color);
@@ -31,6 +31,7 @@
   justify-content: center;
   position: absolute;
   inset: 0;
+  z-index: 5;
 
   p {
     border-radius: 2rem;
@@ -42,42 +43,31 @@
   }
 }
 
-.pieces [data-piece=A1] {
-  background-color: aqua;
-}
+.pieces {
+  display: grid;
+  grid-template: "container";
+  place-items: center;
+  place-content: center;
+  overflow: hidden;
+  height: 100%;
 
-.pieces [data-piece=A2] {
-  background-color: coral;
-}
+  svg {
+    grid-area: container;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 1;
+  }
 
-.pieces [data-piece=A3] {
-  background-color: darkgoldenrod;
-}
+  svg[data-piece^='A'] {
+    z-index: 1;
+  }
 
-.pieces [data-piece=A4] {
-  background-color: deeppink;
-}
+  svg[data-piece^='B'] {
+    z-index: 2;
+  }
 
-.pieces [data-piece=A5] {
-  background-color: brown;
-}
-
-.pieces [data-piece=A6] {
-  background-color: greenyellow;
-}
-
-.pieces [data-piece=A7] {
-  background-color: aquamarine;
-}
-
-.pieces [data-piece=A8] {
-  background-color: darkblue;
-}
-
-.pieces [data-piece=B1] {
-  background-color: blueviolet;
-}
-
-.pieces [data-piece=B2] {
-  background-color: darkmagenta;
+  svg[data-piece^='C'] {
+    z-index: 3;
+  }
 }
