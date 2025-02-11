@@ -1,51 +1,60 @@
 .banner {
-  --status-color: dodgerblue;
-  background-color: white;
-  border: 0.3rem solid var(--status-color);
-  color: var(--status-color);
-  display: flex;
-  flex-direction: column;
-  place-items: center;
-  width: 38em;
-  padding: 2.3em 2em 3em;
+  background-color: #cfbaf0;
+  border-top-left-radius: 3em;
+  border-top-right-radius: 3em;
+  color: var(--color-text-light);
+  width: 41em;
+  padding: 1.5em 1.5em 0;
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 20;
 
   &.won {
-    --status-color: lightseagreen;
+    background-color: #b9fbc0;
   }
+
+  p {
+    font-family: var(--font-family-default);
+    font-size: var(--font-size-md);
+
+    p+& {
+      margin-block-start: 0.8em;
+    }
+  }
+}
+
+.inner {
+  border: 0.5rem dotted white;
+  border-bottom: 0;
+  border-top-left-radius: 2.4em;
+  border-top-right-radius: 2.4em;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  padding: 2.3em 2em 3em;
 }
 
 .heading {
   font-family: var(--font-family-display);
   font-size: var(--font-size-lg);
-}
-
-.text {
-  font-family: var(--font-family-default);
-  font-size: var(--font-size-md);
-
-  .heading+& {
-    margin-block-start: 0.3em;
-  }
+  margin-block-end: 0.6em;
 }
 
 .btn {
-  border: 0.2rem solid var(--status-color);
-  border-radius: 0.25rem;
+  border: 0.125rem solid var(--color-text-light);
+  border-radius: 0.6em;
   background-color: transparent;
-  color: var(--status-color);
-  font-family: var(--font-family-display);
-  letter-spacing: 0.025rem;
-  margin-block-start: 1em;
+  color: var(--color-text-light);
+  font-weight: bold;
+  letter-spacing: 0.02rem;
+  margin-block-start: 3em;
   padding: 0.5rem 0.8rem;
   cursor: pointer;
 
-  &:hover,
-  &:focus-visible {
-    background-color: var(--status-color);
-    color: white;
+  &:hover {
+    background-color: var(--color-text-light);
+    color: var(--color-text-dark);
   }
 }

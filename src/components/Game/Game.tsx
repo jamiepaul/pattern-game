@@ -144,7 +144,11 @@ function Game() {
       </section>
       <Stats streak={streak} longestStreak={longestStreak} />
       {gameStatus !== 'running' && (
-        <Banner status={gameStatus} resetGame={handleRestart} />
+        <Banner
+          status={gameStatus}
+          longestStreak={longestStreak}
+          resetGame={handleRestart}
+        />
       )}
     </>
   );
