@@ -22,7 +22,11 @@
 
   /* TODO: animate dashed border */
   .cell[data-status=empty] & {
-    border: var(--border-width) dashed var(--border-color);
+    border: var(--border-width) dotted var(--border-color);
+  }
+
+  &:focus-visible {
+    outline-offset: var(--border-width);
   }
 }
 
