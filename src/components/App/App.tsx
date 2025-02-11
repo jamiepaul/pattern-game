@@ -6,6 +6,7 @@ function App() {
     <>
       <header className={`container ${styles.header}`}>
         <h1>Patterns Game</h1>
+        <p>Match pieces to get the longest streak</p>
       </header>
       <main className="main container">
         <Game />
@@ -13,7 +14,7 @@ function App() {
       <footer className={styles.footer}>
         <div className={`container ${styles.footerContainer}`}>
           <p>
-            Created by{' '}
+            Created with ❤️ by{' '}
             <a target="_blank" href="https://jamiepaul.io">
               Jamie Paul
             </a>
