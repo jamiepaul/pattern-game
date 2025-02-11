@@ -6,6 +6,7 @@ import { GameStatus, GameCell } from '@/globals';
 import Cell from '@components/Cell';
 import styles from './Game.module.css';
 import Banner from '../Banner';
+import Stats from '../Stats';
 
 // Create new game cells
 const initialCells = createCells(GRID_CELLS);
@@ -124,33 +125,24 @@ function Game() {
 
   return (
     <>
-      <div className="game-wrapper">
-        <section className={styles.grid}>
-          {cells.map(({ id, status, pieces }) => {
-            return (
-              <Cell
-                key={id}
-                id={id}
-                status={status}
-                disabled={gameStatus !== 'running'}
-                pieces={pieces}
-                previous={cells.find(
-                  (cell: GameCell) => cell.status === 'active',
-                )}
-                updateCellsState={updateCellsState}
-              />
-            );
-          })}
-        </section>
-        <div className="sidebar">
-          <dl>
-            <dt>Streak:</dt>
-            <dd>{streak}</dd>
-            <dt>Longest Streak:</dt>
-            <dd>{longestStreak}</dd>
-          </dl>
-        </div>
-      </div>
+      <section className={styles.grid}>
+        {cells.map(({ id, status, pieces }) => {
+          return (
+            <Cell
+              key={id}
+              id={id}
+              status={status}
+              disabled={gameStatus !== 'running'}
+              pieces={pieces}
+              previous={cells.find(
+                (cell: GameCell) => cell.status === 'active',
+              )}
+              updateCellsState={updateCellsState}
+            />
+          );
+        })}
+      </section>
+      <Stats streak={streak} longestStreak={longestStreak} />
       {gameStatus !== 'running' && (
         <Banner status={gameStatus} resetGame={handleRestart} />
       )}

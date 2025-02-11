@@ -83,34 +83,7 @@ a:focus-visible {
 }
 
 .main {
-  container: main / inline-size;
+  /* fill height */
   flex: 1;
   position: relative;
-}
-
-.game-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-
-  @container main (min-width: 43rem) {
-    display: flex;
-    flex-direction: row;
-    place-content: center;
-  }
-}
-
-.sidebar {
-  width: 13em;
-
-  dt {
-    font-family: var(--font-family-display);
-    font-size: var(--font-size-md);
-    text-transform: uppercase;
-  }
-
-  dd {
-    font-size: var(--font-size-lg);
-    margin-block-end: 2rem;
-  }
 }

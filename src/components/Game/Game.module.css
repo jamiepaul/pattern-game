@@ -8,4 +8,6 @@
   grid-row-gap: 0px;
   width: 100%;
   max-width: 45em;
+  margin-inline: auto;
+  margin-block-end: 2em;
 }
