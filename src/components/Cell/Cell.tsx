@@ -65,12 +65,9 @@ function Cell({
       </button>
       <div className={styles.pieces}>
         {pieces.map((pieceId) => (
-          <div key={pieceId} data-piece={pieceId}>
-            {pieceId}
-          </div>
-          // <svg key={pieceId} data-piece={pieceId}>
-          //   <use xlinkHref={`/svg-sprite.svg#${pieceId}`} />
-          // </svg>
+          <svg key={pieceId} data-piece={pieceId}>
+            <use xlinkHref={`/svg-sprite.svg#${pieceId}`} />
+          </svg>
         ))}
       </div>
     </div>

@@ -42,12 +42,14 @@ export const getGamePieces = (amountOfCells: number) => {
   // Randomized layer pieces to distribute
   const layerAPieces = getLayerPieces(amountOfCells, GAME_SET[0]);
   const layerBPieces = getLayerPieces(amountOfCells, GAME_SET[1]);
+  const layerCPieces = getLayerPieces(amountOfCells, GAME_SET[2]);
 
   for (let i = 0; i < amountOfCells; i += 1) {
     const aPiece = layerAPieces[i];
     const bPiece = layerBPieces[i];
+    const cPiece = layerCPieces[i];
 
-    cellPieces.push([aPiece, bPiece]);
+    cellPieces.push([aPiece, bPiece, cPiece]);
   }
 
   return cellPieces;
