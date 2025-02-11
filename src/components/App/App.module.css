@@ -9,7 +9,19 @@
 }
 
 .footer {
+  background-color: light-dark(#e8e8e8, #353535);
   margin-block-start: auto;
   padding-block: 2em 1em;
   text-align: center;
+  width: 100%;
+}
+
+.footerContainer {
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: 33em) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }

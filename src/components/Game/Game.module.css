@@ -1,6 +1,7 @@
 .grid {
-  border: 2px solid #cbedff;
-  background-color: #cbedff;
+  border: 2px solid;
+  border-color: light-dark(#ffffff, #2e2e2e);
+  background-color: light-dark(#ffffff, #2e2e2e);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-column-gap: 0px;

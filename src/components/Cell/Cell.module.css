@@ -1,6 +1,6 @@
 .cell {
-  --border-width: 0.35em;
-  --border-color: #099cff;
+  --border-width: 0.5em;
+  --border-color: #D37D88;
   background-color: white;
   position: relative;
   width: auto;
@@ -11,6 +11,7 @@
 .btn {
   background: transparent;
   border: 0;
+  cursor: pointer;
   position: absolute;
   inset: 0;
   z-index: 10;

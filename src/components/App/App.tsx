@@ -10,13 +10,21 @@ function App() {
       <main className="main container">
         <Game />
       </main>
-      <footer className={`container ${styles.footer}`}>
-        <p>
-          Icons by{' '}
-          <a target="_blank" href="https://icons8.com">
-            Icons8
-          </a>
-        </p>
+      <footer className={styles.footer}>
+        <div className={`container ${styles.footerContainer}`}>
+          <p>
+            Created by{' '}
+            <a target="_blank" href="https://jamiepaul.io">
+              Jamie Paul
+            </a>
+          </p>
+          <p>
+            Icons by{' '}
+            <a target="_blank" href="https://icons8.com">
+              Icons8
+            </a>
+          </p>
+        </div>
       </footer>
     </>
   );
