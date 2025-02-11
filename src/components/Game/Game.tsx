@@ -32,6 +32,8 @@ function Game() {
     setCells(newCells);
     setGameStatus('running');
     setNoMatchCount(0);
+    setStreak(0);
+    setLongestStreak(0);
   };
 
   const removeMatchingPieces = (
