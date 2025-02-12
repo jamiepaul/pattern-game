@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CellStatus, GameCell } from '@/globals';
 import { getMatches } from '@/helpers/game.helpers';
+import { AnimatePresence, motion } from 'motion/react';
 import VisuallyHidden from '../VisuallyHidden';
 import styles from './Cell.module.css';
 
@@ -64,11 +65,34 @@ function Cell({
         </VisuallyHidden>
       </button>
       <div className={styles.pieces}>
-        {pieces.map((pieceId) => (
-          <svg key={pieceId} data-piece={pieceId}>
-            <use xlinkHref={`/svg-sprite.svg#${pieceId}`} />
-          </svg>
-        ))}
+        <AnimatePresence>
+          {pieces.map((pieceId, i) => (
+            <motion.svg
+              key={pieceId}
+              data-piece={pieceId}
+              animate={{
+                scale: [0, 1.5, 1],
+                rotate: [180, 360, 360],
+                transition: {
+                  duration: 2,
+                  delay: i * 0.3,
+                  times: [0, 0.25, 0.5],
+                },
+              }}
+              exit={{
+                scale: [1, 1.5, 0],
+                rotate: [0, 0, 0],
+                transition: {
+                  duration: 1,
+                  delay: i * 0.15,
+                  times: [0, 0.25, 0.5],
+                },
+              }}
+            >
+              <use xlinkHref={`/svg-sprite.svg#${pieceId}`} />
+            </motion.svg>
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );
