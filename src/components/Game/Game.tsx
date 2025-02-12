@@ -15,7 +15,6 @@ const MotionBanner = motion.create(Banner);
 const initialCells = createCells(GRID_CELLS);
 
 function Game() {
-  console.log('RENDER: Game Component');
   const [gameStatus, setGameStatus] = useState<GameStatus>('running');
   const [noMatchCount, setNoMatchCount] = useState(0);
   const [streak, setStreak] = useState<number>(0);

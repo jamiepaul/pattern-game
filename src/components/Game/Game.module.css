@@ -11,14 +11,3 @@
   margin-inline: auto;
   margin-block-end: 2em;
 }
-
-.bannerContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  will-change: transform;
-  z-index: 20;
-}
