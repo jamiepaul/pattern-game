@@ -1,5 +1,6 @@
 import { GameStatus } from '@/globals';
 import styles from './Banner.module.css';
+import { motion } from 'motion/react';
 
 type BannerProps = {
   status: GameStatus;
@@ -10,7 +11,29 @@ type BannerProps = {
 function Banner({ status, longestStreak, resetGame }: BannerProps) {
   const isWon = status === 'won';
   return (
-    <aside className={`${styles.banner} ${isWon ? styles.won : ''}`}>
+    <motion.aside
+      className={`${styles.banner} ${isWon ? styles.won : ''}`}
+      key="banner"
+      style={{ x: '-50%' }}
+      initial={{ y: '-100%' }}
+      animate={{
+        y: '-1%',
+        transition: {
+          type: 'spring',
+          stiffness: 300,
+          damping: 30,
+          restDelta: 0.01,
+        },
+      }}
+      exit={{
+        y: '-100%',
+        transition: {
+          type: 'spring',
+          stiffness: 900,
+          damping: 50,
+        },
+      }}
+    >
       <div className={styles.inner}>
         <h2 className={styles.heading}>{isWon ? 'Flawless!' : 'Almost!'}</h2>
         <p>
@@ -25,7 +48,7 @@ function Banner({ status, longestStreak, resetGame }: BannerProps) {
           Play again
         </button>
       </div>
-    </aside>
+    </motion.aside>
   );
 }
 

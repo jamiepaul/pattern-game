@@ -5,6 +5,10 @@
   color: var(--color-text-light);
   width: 41em;
   padding: 0 1.5em 1.5em;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  will-change: transform;
   z-index: 20;
 
   &.won {
