@@ -61,14 +61,15 @@ h6 {
 a {
   color: currentColor;
   font-weight: bold;
-  text-decoration: underline;
-  text-underline-offset: 0.2rem;
+  text-decoration: none;
+  padding-bottom: 0.1rem;
+  border-bottom: 0.07rem solid currentColor;
+  transition: border 100ms;
 }
 
 a:hover {
   color: currentColor;
-  text-underline-offset: 0.3rem;
-  text-decoration-thickness: 0.25rem;
+  border-bottom-width: 0.2rem;
 }
 
 a:focus-visible {
