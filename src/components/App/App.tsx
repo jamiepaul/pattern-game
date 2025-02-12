@@ -1,9 +1,10 @@
+import { MotionConfig } from 'motion/react';
 import Game from '../Game';
 import styles from './App.module.css';
 
 function App() {
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <header className={`container ${styles.header}`}>
         <h1>Patterns Game</h1>
         <p>Match pieces to get the longest streak</p>
@@ -27,7 +28,7 @@ function App() {
           </p>
         </div>
       </footer>
-    </>
+    </MotionConfig>
   );
 }
 
