@@ -7,6 +7,7 @@ import Cell from '@components/Cell';
 import styles from './Game.module.css';
 import Banner from '../Banner';
 import Stats from '../Stats';
+import { AnimatePresence, motion } from 'motion/react';
 
 // Create new game cells
 const initialCells = createCells(GRID_CELLS);
@@ -123,6 +124,8 @@ function Game() {
     );
   };
 
+  const isShown = true;
+
   return (
     <>
       <section className={styles.grid}>
@@ -143,13 +146,38 @@ function Game() {
         })}
       </section>
       <Stats streak={streak} longestStreak={longestStreak} />
-      {gameStatus !== 'running' && (
-        <Banner
-          status={gameStatus}
-          longestStreak={longestStreak}
-          resetGame={handleRestart}
-        />
-      )}
+      <AnimatePresence>
+        {isShown && (
+          <motion.div
+            className={styles.bannerContainer}
+            key="banner"
+            initial={{ y: '-100%' }}
+            animate={{
+              y: '-1%',
+              transition: {
+                type: 'spring',
+                stiffness: 300,
+                damping: 30,
+                restDelta: 0.01,
+              },
+            }}
+            exit={{
+              y: '-100%',
+              transition: {
+                type: 'spring',
+                stiffness: 900,
+                damping: 50,
+              },
+            }}
+          >
+            <Banner
+              status={gameStatus}
+              longestStreak={longestStreak}
+              resetGame={handleRestart}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

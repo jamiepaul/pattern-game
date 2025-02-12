@@ -1,14 +1,10 @@
 .banner {
   background-color: #cfbaf0;
-  border-top-left-radius: 3em;
-  border-top-right-radius: 3em;
+  border-bottom-left-radius: 3em;
+  border-bottom-right-radius: 3em;
   color: var(--color-text-light);
   width: 41em;
-  padding: 1.5em 1.5em 0;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  padding: 0 1.5em 1.5em;
   z-index: 20;
 
   &.won {
@@ -27,13 +23,15 @@
 
 .inner {
   border: 0.5rem dotted white;
-  border-bottom: 0;
-  border-top-left-radius: 2.4em;
-  border-top-right-radius: 2.4em;
+  border-top: 0;
+  border-bottom-left-radius: 2.4em;
+  border-bottom-right-radius: 2.4em;
+  height: 60dvh;
   display: flex;
   flex-direction: column;
   place-items: center;
-  padding: 2.3em 2em 3em;
+  place-content: flex-end;
+  padding: 3em 2em 5em;
 }
 
 .heading {
