@@ -126,8 +126,6 @@ function Game() {
     );
   };
 
-  const isShown = true;
-
   return (
     <>
       <section className={styles.grid}>
