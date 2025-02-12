@@ -1,4 +1,4 @@
-export const GRID_CELLS: number = 6;
+export const GRID_CELLS: number = 16;
 
 type GameSet = [string[], string[], string[]];
 export const GAME_SET: GameSet = [
