@@ -20,7 +20,6 @@
     border: var(--border-width) solid var(--border-color);
   }
 
-  /* TODO: animate dashed border */
   .cell[data-status=empty] & {
     border: var(--border-width) dotted var(--border-color);
   }

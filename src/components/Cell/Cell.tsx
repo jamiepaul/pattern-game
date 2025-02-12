@@ -56,7 +56,6 @@ function Cell({
       id={id}
       className={styles.cell}
       data-status={disabled ? 'default' : status}
-      data-pieces={pieces.length}
     >
       <div className={styles.message}>{showNoMatch && <p>no match</p>}</div>
       <button className={styles.btn} onClick={handleClick}>

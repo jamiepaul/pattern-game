@@ -54,9 +54,11 @@
   margin-block-start: 3em;
   padding: 0.5rem 0.8rem;
   cursor: pointer;
+  transition: background-color 150ms, color 150ms, border-radius 600ms;
 
   &:hover {
     background-color: var(--color-text-light);
+    border-radius: 2em;
     color: var(--color-text-dark);
   }
 }
