@@ -5,6 +5,7 @@
   position: relative;
   width: auto;
   aspect-ratio: 1;
+  overflow: hidden;
   margin: 0.125em;
 }
 
