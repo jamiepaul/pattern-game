@@ -42,9 +42,14 @@
     border-radius: 2rem;
     background-color: black;
     color: white;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     font-weight: bold;
-    padding: 0.25rem 0.8rem;
+    padding: 0.1rem 0.3rem;
+
+    @media screen and (min-width: 28em) {
+      padding: 0.25rem 0.8rem;
+      font-size: 0.9rem;
+    }
   }
 }
 

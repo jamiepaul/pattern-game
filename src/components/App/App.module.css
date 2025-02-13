@@ -11,14 +11,19 @@
 .footer {
   background-color: light-dark(#e8e8e8, #353535);
   margin-block-start: auto;
-  padding-block: 2em 1em;
+  padding-block: 1em;
   text-align: center;
   width: 100%;
+
+  @media screen and (min-width: 33em) {
+    padding-block-start: 2em;
+  }
 }
 
 .footerContainer {
   display: flex;
   flex-direction: column;
+  gap: 0.5em;
 
   @media screen and (min-width: 33em) {
     flex-direction: row;
