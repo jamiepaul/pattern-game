@@ -1,6 +1,7 @@
 # Pattern Game
 
 My take on re-building the NYT Tiles game– match pieces to get the longest streak.
+[Play the demo](https://pattern-game-one.vercel.app/)
 
 ### Technologies:
 
