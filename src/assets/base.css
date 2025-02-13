@@ -31,8 +31,6 @@ body {
   text-rendering: optimizeSpeed;
   margin: 0;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 
   @media (prefers-color-scheme: light) {
     -webkit-font-smoothing: antialiased;

@@ -3,7 +3,8 @@
   border-bottom-left-radius: 3em;
   border-bottom-right-radius: 3em;
   color: var(--color-text-light);
-  width: 41em;
+  max-width: 41em;
+  width: 90%;
   padding: 0 1.5em 1.5em;
   position: fixed;
   top: 0;
@@ -36,11 +37,15 @@
   place-items: center;
   place-content: flex-end;
   padding: 3em 2em 5em;
+
+  p {
+    text-align: center;
+  }
 }
 
 .heading {
   font-family: var(--font-family-display);
-  font-size: var(--font-size-lg);
+  font-size: clamp(1.5rem, 1.333rem + 0.833vw, 2rem);
   margin-block-end: 0.6em;
 }
 
