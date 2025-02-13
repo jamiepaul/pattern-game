@@ -6,7 +6,7 @@ function App() {
   return (
     <MotionConfig reducedMotion="user">
       <header className={`container ${styles.header}`}>
-        <h1>Patterns Game</h1>
+        <h1>Pattern Game</h1>
         <p>Match pieces to get the longest streak</p>
       </header>
       <main className="main container">
