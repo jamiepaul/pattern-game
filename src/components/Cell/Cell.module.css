@@ -1,6 +1,6 @@
 .cell {
   --border-width: 0.5em;
-  --border-color: #D37D88;
+  --border-color: #d37d88;
   background-color: white;
   position: relative;
   width: auto;
@@ -17,11 +17,11 @@
   inset: 0;
   z-index: 10;
 
-  .cell[data-status=active] & {
+  .cell[data-status='active'] & {
     border: var(--border-width) solid var(--border-color);
   }
 
-  .cell[data-status=empty] & {
+  .cell[data-status='empty'] & {
     border: var(--border-width) dotted var(--border-color);
   }
 
@@ -44,7 +44,12 @@
     color: white;
     font-size: 0.7rem;
     font-weight: bold;
-    padding: 0.1rem 0.3rem;
+    line-height: 1;
+    padding: 0.2rem 0.4rem 0.3rem;
+
+    @media screen and (min-width: 21em) {
+      font-size: 0.75rem;
+    }
 
     @media screen and (min-width: 28em) {
       padding: 0.25rem 0.8rem;
@@ -55,7 +60,7 @@
 
 .pieces {
   display: grid;
-  grid-template: "container";
+  grid-template: 'container';
   place-items: center;
   place-content: center;
   overflow: hidden;

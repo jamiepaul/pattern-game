@@ -2,8 +2,8 @@
   /*
   Clamp Generator: https://chrisburnell.com/clamp-calculator/?font-size-root=16&viewport-min=320&viewport-max=1280&viewport-units=vw
   */
-  --font-family-display: "Francois One", serif;
-  --font-family-default: "Karla", serif;
+  --font-family-display: 'Francois One', serif;
+  --font-family-default: 'Karla', serif;
   --font-size-lg: clamp(1rem, 0.792rem + 1.042vw, 1.625rem);
   --font-size-md: clamp(1rem, 0.958rem + 0.208vw, 1.125rem);
   --font-size-sm: clamp(0.875rem, 0.85rem + 0.125vw, 1rem);
@@ -15,7 +15,7 @@
   --color-text-light: #2e2e2e;
   --color-text-dark: #f7f7f7;
 
-  --bp-tablet: "min-width: 43rem";
+  --bp-tablet: 'min-width: 43rem';
 }
 
 body {
@@ -46,7 +46,6 @@ body {
   min-height: 100dvh;
 }
 
-/* TODO: Add normalize layer */
 h1,
 h2,
 h3,
@@ -78,7 +77,11 @@ a:focus-visible {
   width: 100%;
   max-width: 1280px;
   margin-inline: auto;
-  padding-inline: 2rem;
+  padding-inline: 1.25rem;
+
+  @media screen and (min-width: 28em) {
+    padding-inline: 2rem;
+  }
 }
 
 .main {
