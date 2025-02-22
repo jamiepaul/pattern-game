@@ -11,15 +11,12 @@ import { AnimatePresence, motion } from 'motion/react';
 
 const MotionBanner = motion.create(Banner);
 
-// Create new game cells
-const initialCells = createCells(GRID_CELLS);
-
-function Game() {
+function Game({ onReset }: { onReset: () => void }) {
   const [gameStatus, setGameStatus] = useState<GameStatus>('running');
   const [noMatchCount, setNoMatchCount] = useState(0);
   const [streak, setStreak] = useState<number>(0);
   const [longestStreak, setLongestStreak] = useState<number>(0);
-  const [cells, setCells] = useState<GameCell[]>(initialCells);
+  const [cells, setCells] = useState<GameCell[]>(() => createCells(GRID_CELLS));
 
   useEffect(() => {
     const allEmpty = cells.every((cell) => cell.pieces.length === 0);
@@ -29,15 +26,6 @@ function Game() {
 
     setGameStatus(noMatchCount === 0 ? 'won' : 'complete');
   }, [cells, noMatchCount]);
-
-  const handleRestart = () => {
-    const newCells = createCells(GRID_CELLS);
-    setCells(newCells);
-    setGameStatus('running');
-    setNoMatchCount(0);
-    setStreak(0);
-    setLongestStreak(0);
-  };
 
   const removeMatchingPieces = (
     activeCell: GameCell,
@@ -150,7 +138,7 @@ function Game() {
           <MotionBanner
             status={gameStatus}
             longestStreak={longestStreak}
-            resetGame={handleRestart}
+            resetGame={onReset}
           />
         )}
       </AnimatePresence>
