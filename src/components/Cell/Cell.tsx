@@ -8,21 +8,13 @@ import { staggeredScaleRotate } from './animations';
 
 type CellProps = {
   id: string;
-  disabled: boolean;
   status: CellStatus;
   pieces: string[];
   previous: GameCell | undefined;
   updateCellsState: (id: string, matches?: string[]) => void;
 };
 
-function Cell({
-  id,
-  disabled,
-  status,
-  pieces,
-  previous,
-  updateCellsState,
-}: CellProps) {
+function Cell({ id, status, pieces, previous, updateCellsState }: CellProps) {
   const [showNoMatch, setShowNoMatch] = useState(false);
 
   useEffect(() => {
@@ -36,7 +28,7 @@ function Cell({
 
   function handleClick() {
     // do nothing if same cell is clicked twice OR game is over
-    if (status === 'active' || disabled) return;
+    if (status === 'active' || status === 'inactive') return;
 
     // only one cell has been clicked, comparison can't be run
     if (!previous) {
@@ -53,11 +45,7 @@ function Cell({
   }
 
   return (
-    <div
-      id={id}
-      className={styles.cell}
-      data-status={disabled ? 'default' : status}
-    >
+    <div id={id} className={styles.cell} data-status={status}>
       <div className={styles.message}>{showNoMatch && <p>no match</p>}</div>
       <button className={styles.btn} onClick={handleClick}>
         <VisuallyHidden>

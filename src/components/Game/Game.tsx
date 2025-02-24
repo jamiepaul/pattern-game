@@ -24,7 +24,18 @@ function Game({ onReset }: { onReset: () => void }) {
       return;
     }
 
+    function deactivateCells() {
+      setCells(
+        produce(cells, (draftCells) => {
+          for (const cell of draftCells) {
+            cell.status = 'inactive';
+          }
+        }),
+      );
+    }
+
     setGameStatus(noMatchCount === 0 ? 'won' : 'complete');
+    deactivateCells();
   }, [cells, noMatchCount]);
 
   const removeMatchingPieces = (
@@ -122,7 +133,6 @@ function Game({ onReset }: { onReset: () => void }) {
               key={id}
               id={id}
               status={status}
-              disabled={gameStatus !== 'running'}
               pieces={pieces}
               previous={cells.find(
                 (cell: GameCell) => cell.status === 'active',
