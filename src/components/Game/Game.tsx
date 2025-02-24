@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { GameStatus, MatchCellStatus } from '@/globals';
+import { GameStatus } from '@/globals';
 import Cell from '@components/Cell';
 import styles from './Game.module.css';
 import Banner from '../Banner';
@@ -8,26 +8,26 @@ import Stats from '../Stats';
 import { AnimatePresence, motion } from 'motion/react';
 import useCellData from '@/hooks/useCellData';
 import { useStreak } from '@/hooks/useStreak';
+import { useActiveAndMatchCells } from '@/hooks/useActiveAndMatchCells';
 
 const MotionBanner = motion.create(Banner);
 
 function Game({ onReset }: { onReset: () => void }) {
   const [gameStatus, setGameStatus] = useState<GameStatus>('running');
   const [noMatchCount, setNoMatchCount] = useState(0);
-  const {longestStreak, streak, resetStreak, incrementStreak} = useStreak();
+  const { longestStreak, streak, resetStreak, incrementStreak } = useStreak();
   const { cells, dropMatches, areAllEmpty } = useCellData();
-  const [activeCellId, setActiveCellId] = useState<string | null>(null);
-  const [matchCellId, setMatchCellId] = useState<string | null>(null);
-  const [matchCellStatus, setMatchCellStatus] =
-    useState<MatchCellStatus | null>(null);
 
-  if (areAllEmpty() && gameStatus === 'running') {
-    if (noMatchCount > 0) {
-      setGameStatus('complete');
-    } else {
-      setGameStatus('won');
-    }
-  }
+  const {
+    activeCellId,
+    matchCellId,
+    matchCellStatus,
+    activateCell,
+    markNoMatch,
+    markAllMatch,
+    markPartialMatch,
+  } = useActiveAndMatchCells();
+
   function handleClick(cellId: string) {
     if (activeCellId === cellId) {
       //do nothing if the same cell is clicked
@@ -35,36 +35,28 @@ function Game({ onReset }: { onReset: () => void }) {
     }
 
     if (activeCellId == null) {
-      setActiveCellId(cellId);
-      setMatchCellId(null);
-      setMatchCellStatus(null);
+      activateCell(cellId);
       return;
     }
 
     const nextMatchCellId = cellId;
-    setMatchCellId(nextMatchCellId);
     const dropResult = dropMatches(activeCellId, nextMatchCellId);
 
     if (dropResult === 'no_match') {
-      setActiveCellId(null);
-      setMatchCellId(nextMatchCellId);
-      setMatchCellStatus('no_match');
+      markNoMatch(nextMatchCellId);
       setNoMatchCount(noMatchCount + 1);
       resetStreak();
       return;
     }
 
     if (dropResult === 'all_match') {
-      setMatchCellStatus('all_match');
-      setActiveCellId(null);
-      incrementStreak()
+      markAllMatch(nextMatchCellId);
+      incrementStreak();
       return;
     }
 
     if (dropResult === 'partial_match') {
-      setActiveCellId(nextMatchCellId);
-      setMatchCellId(null);
-      setMatchCellStatus(null);
+      markPartialMatch(nextMatchCellId);
       incrementStreak();
     }
   }
@@ -80,6 +72,14 @@ function Game({ onReset }: { onReset: () => void }) {
       return matchCellStatus;
     }
     return 'default';
+  }
+
+  if (areAllEmpty() && gameStatus === 'running') {
+    if (noMatchCount > 0) {
+      setGameStatus('complete');
+    } else {
+      setGameStatus('won');
+    }
   }
 
   return (
