@@ -21,7 +21,7 @@
     border: var(--border-width) solid var(--border-color);
   }
 
-  .cell[data-status='empty'] & {
+  .cell[data-status='all_match'] & {
     border: var(--border-width) dotted var(--border-color);
   }
 

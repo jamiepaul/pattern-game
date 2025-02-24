@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { GameCell } from '@/globals';
+import { GameCells } from '@/globals';
 import { random } from '@/utils';
 import { GAME_SET } from '@/constants';
 
@@ -18,16 +18,12 @@ export const getMatches = (
   return matching;
 };
 
-export const createCells = (amountOfCells: number): GameCell[] => {
-  const output = [];
+export const createCells = (amountOfCells: number): GameCells => {
+  const output: GameCells = {};
   const gamePieces = getGamePieces(amountOfCells);
 
   for (let i = 0; i < amountOfCells; i += 1) {
-    output.push({
-      id: uuidv4(),
-      status: 'default' as const,
-      pieces: gamePieces[i],
-    });
+    output[uuidv4()] = gamePieces[i];
   }
 
   return output;
