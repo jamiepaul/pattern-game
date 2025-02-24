@@ -7,14 +7,14 @@ import Banner from '../Banner';
 import Stats from '../Stats';
 import { AnimatePresence, motion } from 'motion/react';
 import useCellData from '@/hooks/useCellData';
+import { useStreak } from '@/hooks/useStreak';
 
 const MotionBanner = motion.create(Banner);
 
 function Game({ onReset }: { onReset: () => void }) {
   const [gameStatus, setGameStatus] = useState<GameStatus>('running');
   const [noMatchCount, setNoMatchCount] = useState(0);
-  const [streak, setStreak] = useState<number>(0);
-  const [longestStreak, setLongestStreak] = useState<number>(0);
+  const {longestStreak, streak, resetStreak, incrementStreak} = useStreak();
   const { cells, dropMatches, areAllEmpty } = useCellData();
   const [activeCellId, setActiveCellId] = useState<string | null>(null);
   const [matchCellId, setMatchCellId] = useState<string | null>(null);
@@ -50,19 +50,14 @@ function Game({ onReset }: { onReset: () => void }) {
       setMatchCellId(nextMatchCellId);
       setMatchCellStatus('no_match');
       setNoMatchCount(noMatchCount + 1);
-      setStreak(0);
+      resetStreak();
       return;
     }
 
     if (dropResult === 'all_match') {
       setMatchCellStatus('all_match');
       setActiveCellId(null);
-
-      const nextStreak = streak + 1;
-      setStreak(nextStreak);
-      if (nextStreak > longestStreak) {
-        setLongestStreak(nextStreak);
-      }
+      incrementStreak()
       return;
     }
 
@@ -70,11 +65,7 @@ function Game({ onReset }: { onReset: () => void }) {
       setActiveCellId(nextMatchCellId);
       setMatchCellId(null);
       setMatchCellStatus(null);
-      const nextStreak = streak + 1;
-      setStreak(nextStreak);
-      if (nextStreak > longestStreak) {
-        setLongestStreak(nextStreak);
-      }
+      incrementStreak();
     }
   }
 
