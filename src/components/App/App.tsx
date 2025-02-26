@@ -1,6 +1,6 @@
 import { MotionConfig } from 'motion/react';
-import Game from '../Game';
 import styles from './App.module.css';
+import GameResetController from '../GameResetController';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
         <p>Match pieces to get the longest streak</p>
       </header>
       <main className="main container">
-        <Game />
+        <GameResetController />
       </main>
       <footer className={styles.footer}>
         <div className={`container ${styles.footerContainer}`}>

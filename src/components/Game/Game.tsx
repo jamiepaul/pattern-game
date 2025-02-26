@@ -1,145 +1,98 @@
-import { useEffect, useState } from 'react';
-import { produce } from 'immer';
-import { GRID_CELLS } from '@/constants';
-import { createCells } from '@/helpers/game.helpers';
-import { GameStatus, GameCell } from '@/globals';
+import { useState } from 'react';
+
+import { GameStatus } from '@/globals';
 import Cell from '@components/Cell';
 import styles from './Game.module.css';
 import Banner from '../Banner';
 import Stats from '../Stats';
 import { AnimatePresence, motion } from 'motion/react';
+import useCellData from '@/hooks/useCellData';
+import { useStreak } from '@/hooks/useStreak';
+import { useActiveAndMatchCells } from '@/hooks/useActiveAndMatchCells';
 
 const MotionBanner = motion.create(Banner);
 
-// Create new game cells
-const initialCells = createCells(GRID_CELLS);
-
-function Game() {
+function Game({ onReset }: { onReset: () => void }) {
   const [gameStatus, setGameStatus] = useState<GameStatus>('running');
   const [noMatchCount, setNoMatchCount] = useState(0);
-  const [streak, setStreak] = useState<number>(0);
-  const [longestStreak, setLongestStreak] = useState<number>(0);
-  const [cells, setCells] = useState<GameCell[]>(initialCells);
+  const { longestStreak, streak, resetStreak, incrementStreak } = useStreak();
+  const { cells, dropMatches, areAllEmpty } = useCellData();
 
-  useEffect(() => {
-    const allEmpty = cells.every((cell) => cell.pieces.length === 0);
-    if (!allEmpty) {
+  const {
+    activeCellId,
+    matchCellId,
+    matchCellStatus,
+    activateCell,
+    markNoMatch,
+    markAllMatch,
+    markPartialMatch,
+  } = useActiveAndMatchCells();
+
+  function handleClick(cellId: string) {
+    if (activeCellId === cellId) {
+      //do nothing if the same cell is clicked
       return;
     }
 
-    setGameStatus(noMatchCount === 0 ? 'won' : 'complete');
-  }, [cells, noMatchCount]);
-
-  const handleRestart = () => {
-    const newCells = createCells(GRID_CELLS);
-    setCells(newCells);
-    setGameStatus('running');
-    setNoMatchCount(0);
-    setStreak(0);
-    setLongestStreak(0);
-  };
-
-  const removeMatchingPieces = (
-    activeCell: GameCell,
-    nextCell: GameCell,
-    matches: string[],
-  ) => {
-    matches.forEach((pieceId) => {
-      activeCell.pieces = activeCell.pieces.filter((item) => item !== pieceId);
-      nextCell.pieces = nextCell.pieces.filter((item) => item !== pieceId);
-    });
-  };
-
-  const resetCellStatuses = (
-    prevActiveCell: GameCell | undefined,
-    activeCell?: GameCell | undefined,
-  ) => {
-    if (prevActiveCell) {
-      prevActiveCell.status = 'default';
-    }
-    if (activeCell) {
-      activeCell.status = 'default';
-    }
-  };
-
-  const updateCellStatuses = (
-    emptyCell: GameCell | undefined,
-    activeCell: GameCell | undefined,
-    nextCell: GameCell,
-  ) => {
-    if (emptyCell) {
-      emptyCell.status = 'default';
-    }
-    if (activeCell) {
-      activeCell.status = nextCell.pieces.length > 0 ? 'previous' : 'default';
-    }
-    nextCell.status = nextCell.pieces.length > 0 ? 'active' : 'empty';
-  };
-
-  const updateCounts = (hasMatches: boolean) => {
-    if (!hasMatches) {
-      setNoMatchCount((c) => c + 1);
-      setStreak(0);
+    if (activeCellId == null) {
+      activateCell(cellId);
       return;
     }
 
-    setLongestStreak((ls) => {
-      if (ls > streak) {
-        return ls;
-      } else {
-        return ls + 1;
-      }
-    });
-    setStreak((s) => s + 1);
-  };
+    const nextMatchCellId = cellId;
+    const dropResult = dropMatches(activeCellId, nextMatchCellId);
 
-  const updateCellsState = (id: string, matches?: string[]) => {
-    if (matches) {
-      updateCounts(matches.length > 0);
+    if (dropResult === 'no_match') {
+      markNoMatch(nextMatchCellId);
+      setNoMatchCount(noMatchCount + 1);
+      resetStreak();
+      return;
     }
 
-    setCells(
-      produce(cells, (draft) => {
-        const nextCell = draft.find((item) => item.id === id)!;
-        const activeCell = draft.find((item) => item.status === 'active');
-        const prevActiveCell = draft.find((item) => item.status === 'previous');
-        const emptyCell = draft.find((item) => item.status === 'empty');
+    if (dropResult === 'all_match') {
+      markAllMatch(nextMatchCellId);
+      incrementStreak();
+      return;
+    }
 
-        // zero matches
-        if (matches && matches.length === 0) {
-          resetCellStatuses(prevActiveCell, activeCell);
-        }
+    if (dropResult === 'partial_match') {
+      markPartialMatch(nextMatchCellId);
+      incrementStreak();
+    }
+  }
 
-        // has matches
-        if (matches && matches.length > 0) {
-          removeMatchingPieces(activeCell!, nextCell!, matches);
-          resetCellStatuses(prevActiveCell);
-          updateCellStatuses(emptyCell, activeCell, nextCell);
-        }
+  function getCellStatus(cellId: string) {
+    if (gameStatus !== 'running') {
+      return 'inactive';
+    }
+    if (activeCellId === cellId) {
+      return 'active';
+    }
+    if (matchCellId === cellId && matchCellStatus !== null) {
+      return matchCellStatus;
+    }
+    return 'default';
+  }
 
-        // comparison hasn't happened yet
-        if (typeof matches === 'undefined') {
-          updateCellStatuses(emptyCell, activeCell, nextCell);
-        }
-      }),
-    );
-  };
+  if (areAllEmpty() && gameStatus === 'running') {
+    if (noMatchCount > 0) {
+      setGameStatus('complete');
+    } else {
+      setGameStatus('won');
+    }
+  }
 
   return (
     <>
       <section className={styles.grid}>
-        {cells.map(({ id, status, pieces }) => {
+        {Object.keys(cells).map((cellId) => {
           return (
             <Cell
-              key={id}
-              id={id}
-              status={status}
-              disabled={gameStatus !== 'running'}
-              pieces={pieces}
-              previous={cells.find(
-                (cell: GameCell) => cell.status === 'active',
-              )}
-              updateCellsState={updateCellsState}
+              id={cellId}
+              key={cellId}
+              pieces={cells[cellId]}
+              status={getCellStatus(cellId)}
+              onClick={handleClick}
             />
           );
         })}
@@ -150,7 +103,7 @@ function Game() {
           <MotionBanner
             status={gameStatus}
             longestStreak={longestStreak}
-            resetGame={handleRestart}
+            resetGame={onReset}
           />
         )}
       </AnimatePresence>

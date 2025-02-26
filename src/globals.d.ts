@@ -1,9 +1,17 @@
-export type GameCell = {
+export type CellData = {
   id: string;
-  status: 'default' | 'previous' | 'active' | 'empty';
-  pieces: string[];
-};
+  pieces: []
+}
 
-export type CellStatus = 'default' | 'previous' | 'active' | 'empty';
+export type ActiveCellStatus = "active";
+export type MatchCellStatus = "no_match" | "all_match";
+
+export type GameCells = { [key: string]: string[] };
+
+export type CellStatus =
+  | 'default'
+  | ActiveCellStatus
+  | MatchCellStatus
+  | 'inactive';
 
 export type GameStatus = 'running' | 'won' | 'complete';
